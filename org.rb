@@ -44,7 +44,8 @@ class Org
   # Created on 06/10/2020 by Kevin Dong
   # To String method
   def to_s
-    heading = "#{id}: Url: #{url}, Picture Url: #{pic_url}, Campus: #{campus}, Status: #{status}, Purpose: #{purpose}, "
+    heading = "#{name} — ID: #{id}, Url: https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{
+                  id}, Picture Url: #{pic_url}, Campus: #{campus}, Status: #{status}, Purpose: #{purpose}, "
     people = "Primary Leader: #{p_leader}, Secondary Leader: #{s_leader}, Treasury Leader: #{t_leader}, "
     contact = "Advisor: #{advisor}, Email: #{email}, Website: #{website}, "
     stat1 = "Primary Type: #{p_type}, Secondary Type: #{s_type}, Makeup: #{make_up}, Constitution: #{constitution}, "

@@ -15,8 +15,10 @@ require './output.rb'
 
 # MAIN
 puts 'Welcome to The Ohio State University Clubs page!'
-url = basic_search # Call basic_search to trim list of organizations
+url = Searching.basic_search # Call basic_search to trim list of organizations
+puts url
 orgs = [] # orgs - array to store Org objects
 get_org_list url, orgs # stores objects into array orgs
+puts 'GOT LIST'
 get_org_data orgs # populates Org objects with respective data
 output_handler orgs # display all Orgs

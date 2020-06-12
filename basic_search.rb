@@ -19,10 +19,10 @@ module Searching
     page = agent.get 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list'
     val = 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list' + Searching.get_campus(page) +
           Searching.get_directory + Searching.get_search
-    puts 'Do you want to perform advanced search? (y/n): '
+    print 'Do you want to perform advanced search? (y/n): '
     input = gets.chomp
     while !(/^[ynYN]$/.match? input)
-      puts 'Invalid input! Do you want to perform advanced search? (y/n): '
+      print 'Invalid input! Do you want to perform advanced search? (y/n): '
       input = gets.chomp
     end
     val += Searching.get_category(page) + Searching.get_text_type(page) + Searching.get_reg_win(page) + Searching.show_inactive_org if /[yY]/.match? input
@@ -39,13 +39,13 @@ module Searching
     list.each do |i|
       campuses.append(i.text.split.join(' '))
     end
-    (0...campuses.length).each { |i|
+    (0...campuses.length).each do |i|
       puts "#{i + 1}: #{campuses[i]}"
-    }
-    puts "Enter a number between 1 and #{campuses.length} for a campus: "
+    end
+    print "Enter a number between 1 and #{campuses.length} for a campus: "
     input = gets.chomp
     while (!(/[1-9][0-9]*/.match? input) && input.to_i >= campuses.length)
-      puts "Invalid input! Enter a number between 1 and #{campuses.length}: "
+      print "Invalid input! Enter a number between 1 and #{campuses.length}: "
       input = gets.chomp
     end
     ret = "&c=#{campuses[input.to_i - 1]}"
@@ -56,10 +56,10 @@ module Searching
   # Created on 06/10/2020 by Prachiti Garge
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   def self.get_directory
-    puts 'Enter an alphabet (1 for numbers, 0 for all) to search directory: '
+    print 'Enter an alphabet (1 for numbers, 0 for all) to search directory: '
     input = gets.chomp
-    while !(/[A-Za-z01]/.match(input))
-      puts 'Invalid input! Enter a letter (1 for numbers, 0 for all) to search directory: '
+    while !(/^[A-Za-z01]$/.match(input))
+      print 'Invalid input! Enter an alphabet (1 for numbers, 0 for all) to search directory: '
       input = gets.chomp
     end
     ret = if input == '0'
@@ -76,7 +76,7 @@ module Searching
   # Created on 06/10/2020 by Prachiti Garge
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   def self.get_search
-    puts 'Type a search term (press enter to skip): '
+    print 'Type a search term (press enter to skip): '
     input = gets
     ret = ''
     ret = "&s=#{CGI.escape(input.chomp)}" if input != '\n'
@@ -94,15 +94,15 @@ module Searching
     list.each do |i|
       categories.append(i.text.split.join(' '))
     end
-    (0...categories.length).each { |i|
+    (0...categories.length).each do |i|
       puts "#{i + 1}: #{categories[i]}"
-    }
+    end
     input = []
-    puts "Enter a number between 1 and #{categories.length} per line for a category (0 for all, press enter to end category selection): "
+    print "Enter a number between 1 and #{categories.length} per line for a category (0 for all, -1 to end category selection): "
     input_val = gets.chomp
     while input_val != '-1'
-      while !(/[1-9][0-9]*/.match? input_val) && input_val.to_i >= categories.length
-        puts "Invalid input! Enter a number between 1 and #{categories.length}: "
+      while !(/^[1-9][0-9]*$/.match? input_val) && input_val.to_i >= categories.length
+        print "Invalid input! Enter a number between 1 and #{categories.length}: "
         input_val = gets.chomp
         break if input_val == '0'
       end
@@ -114,9 +114,9 @@ module Searching
       input.to_i.sort!
       unless input.include? '0'
         ret = "&m=#{CGI.escape(categories[input[0].to_i - 1])}"
-        (1...input.length).each { |i|
+        (1...input.length).each do |i|
           ret += "+#{CGI.escape(categories[input[i].to_i - 1])}"
-        }
+        end
       end
     end
     ret
@@ -132,10 +132,10 @@ module Searching
     list.each do |i|
       types.append(i.text.split.join(' '))
     end
-    (0...types.length).each { |i|
+    (0...types.length).each do |i|
       puts "#{i + 1}: #{types[i]}"
-    }
-    puts "Enter a number between 1 and #{types.length} for searching text type: "
+    end
+    print "Enter a number between 1 and #{types.length} for searching text type: "
     input = gets.chomp
     while !(/[1-9][0-9]*/.match? input) && input.to_i >= types.length
       puts "Invalid input! Enter a number between 1 and #{types.length}: "
@@ -153,13 +153,13 @@ module Searching
     list = page.search('//div/span[@id="ctl00_ContentBody_pageFormControl_rbl_ott"]/label')
     win = []
     list.each { |i| win.append i.text.split.join '' }
-    (0...win.length).each { |i|
+    (0...win.length).each do |i|
       puts "#{i + 1}: #{win[i]}"
-    }
-    puts "Enter a number between 1 and #{win.length} for a registration window: "
+    end
+    print "Enter a number between 1 and #{win.length} for a registration window: "
     input = gets.chomp
     while (!(/[1-9][0-9]*/.match? input) && input.to_i >= win.length)
-      puts 'Invalid input! Enter a number between 1 and 7: '
+      print 'Invalid input! Enter a number between 1 and 7: '
       input = gets.chomp
     end
     ret = "&ot=#{input.to_i - 1}"
@@ -171,10 +171,10 @@ module Searching
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   def self.show_inactive_org
     ret = ''
-    puts 'Do you want to see inactive organizations? (y/n): '
+    print 'Do you want to see inactive organizations? (y/n): '
     input = gets.chomp
     while !(/^[ynYN]$/.match? input)
-      puts 'Invalid input! Do you want to see inactive organizations? (y/n): '
+      print 'Invalid input! Do you want to see inactive organizations? (y/n): '
       input = gets.chomp
     end
     ret = if /[yY]/.match? input

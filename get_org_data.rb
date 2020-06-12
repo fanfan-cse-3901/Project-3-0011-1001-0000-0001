@@ -11,6 +11,7 @@ require './org.rb'
 #
 # Returns nothing.
 def get_org_data orgs
+  print 'PROCCESSING: ['
   orgs.each do |i|
     # construct data into each object via unique identifier
     org_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{i.id}"
@@ -23,9 +24,8 @@ def get_org_data orgs
     table = page.search('//form/div/table/tr')
     # store into name object
     i.name = name.text
-
     count = 0
-    while count < table.length()
+    while count < table.length
       combo = table[count].text.split(':')
       if combo[0].include? 'Campus'
         i.campus = combo[1].strip
@@ -46,22 +46,22 @@ def get_org_data orgs
         # Since we split by :, links often have : so we repatch it here
         link_count = 2
         link = combo[1].strip
-        while link_count < combo.length()
+        while link_count < combo.length
           link += ':' + combo[link_count].strip
           link_count += 1
         end
         i.website = link
-         # puts i.website
+      # puts i.website
       elsif combo[0].include? 'Facebook'
         # Since we split by :, links often have : so we repatch it here
         link_count = 2
         link = combo[1].strip
-        while link_count < combo.length()
+        while link_count < combo.length
           link += ':' + combo[link_count].strip
           link_count += 1
         end
         i.facebook = link
-         # puts i.facebook
+      # puts i.facebook
       elsif combo[0].include? 'Primary Type'
         i.p_type = combo[1].strip
       elsif combo[0].include? 'Secondary Type'
@@ -86,6 +86,10 @@ def get_org_data orgs
         i.charge_dues = combo[1].strip
       end
       count += 1
+
     end
+    print '█'
   end
+  print ']'
+  puts
 end
