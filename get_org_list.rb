@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# File created 06/10/2020 by Yifan Yao
+# File created on 06/10/2020 by Yifan Yao
 require 'mechanize'
 require './org.rb'
 
