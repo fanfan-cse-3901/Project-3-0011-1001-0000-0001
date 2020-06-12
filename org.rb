@@ -6,8 +6,8 @@
 # Created 06/10/2020 by Yifan Yao
 class Org
   attr_reader :id
-  attr_accessor :url, :pic_url, :campus, :status, :purpose, :p_leader,
-                :s_leader, :t_leader, :advisor, :email, :website, :p_type,
+  attr_accessor :pic_url, :campus, :status, :purpose, :p_leader,
+                :s_leader, :t_leader, :advisor, :email, :website, :facebook, :p_type,
                 :s_type, :make_up, :constitution, :time_place, :office_location,
                 :membership_type, :membership_contact, :new_membership_time, :how_to_apply, :charge_dues
 
