@@ -50,7 +50,8 @@ end
 def output_file orgs
   file = File.open './testing/Organizations.txt', 'w' do |line|
     orgs.each do |org|
-      line.write org.to_s
+      line.puts org.to_s
+      line.puts
     end
   end
   puts 'File created at /testing/Organizations.txt'
