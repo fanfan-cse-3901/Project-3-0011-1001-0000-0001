@@ -2,6 +2,7 @@
 
 # File created 06/11/2020 by Yifan Yao: created URL
 # Edited 06/11/2020 by Amanda Cheng: Reconstructed entire get_org_data and stored every information into Org Object
+# Edited 06/14/2020 by Kevin Dong: get_org_attr method
 require 'mechanize'
 require './org.rb'
 
@@ -84,6 +85,92 @@ def get_org_data orgs
         i.how_to_apply = combo[1].strip
       elsif combo[0].include? 'Charge'
         i.charge_dues = combo[1].strip
+      end
+      count += 1
+
+    end
+    print '█'
+  end
+  print ']'
+  puts
+end
+
+# Created on 06/13/2020 by Kevin Dong
+# Public: Scrapes selected attributes from each org page.
+#
+# orgs - array of hashes that represent the org
+# attr - array of attributes to scrape
+#
+# Updates orgs with more key-value pairs per org hash
+def get_org_attr orgs, attr
+  print 'SCRAPING: ['
+  orgs.each do |org|
+    agent = Mechanize.new
+    page = agent.get "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org.id}"
+
+    # get values from form via XPath
+    name = page.search('//div/h4')
+    table = page.search('//form/div/table/tr')
+
+    # store into name object
+    org.name = name.text
+    count = 0
+    while count < table.length
+      combo = table[count].text.split(':')
+      if combo[0].include? 'Campus'
+        org.campus = combo[1].strip
+      elsif combo[0].include? 'Status'
+        org.status = combo[1].strip
+      elsif combo[0].include? 'Purpose'
+        org.purpose = combo[1].strip
+      elsif combo[0].include? 'Primary Leader'
+        org.p_leader = combo[1].strip
+      elsif combo[0].include? 'Treas'
+        org.t_leader = combo[1].strip
+      elsif combo[0].include? 'Advisor'
+        org.advisor = combo[1].strip
+      elsif combo[0].include? 'Email'
+        org.email = combo[1].strip
+      elsif combo[0].include? 'Website'
+        # Since we split by :, links often have : so we repatch it here
+        link_count = 2
+        link = combo[1].strip
+        while link_count < combo.length
+          link += ':' + combo[link_count].strip
+          link_count += 1
+        end
+        org.website = link
+      elsif combo[0].include? 'Facebook'
+        # Since we split by :, links often have : so we repatch it here
+        link_count = 2
+        link = combo[1].strip
+        while link_count < combo.length
+          link += ':' + combo[link_count].strip
+          link_count += 1
+        end
+        org.facebook = link
+      elsif combo[0].include? 'Primary Type'
+        org.p_type = combo[1].strip
+      elsif combo[0].include? 'Secondary Type'
+        org.s_type = combo[1].strip
+      elsif combo[0].include? 'Make Up'
+        org.make_up = combo[1].strip
+      elsif combo[0].include? 'Constitution'
+        org.constitution = combo[1].strip
+      elsif combo[0].include? 'Meeting Time'
+        org.time_place = combo[1].strip
+      elsif combo[0].include? 'Office Location'
+        org.office_location = combo[1].strip
+      elsif combo[0].include? 'Membership Type'
+        org.membership_type = combo[1].strip
+      elsif combo[0].include? 'Membership Contact'
+        org.membership_contact = combo[1].strip
+      elsif combo[0].include? 'Time of Year'
+        org.new_membership_time = combo[1].strip
+      elsif combo[0].include? 'How'
+        org.how_to_apply = combo[1].strip
+      elsif combo[0].include? 'Charge'
+        org.charge_dues = combo[1].strip
       end
       count += 1
 
