@@ -13,11 +13,11 @@ include Fox
 # Class created 06/15/2020 by Yifan Yao
 class Menu < FXMainWindow
   def initialize(app)
-    super(app, 'OSU Student Organizations Information Collector', width: 400, height: 250)
+    super(app, 'OSU Student Organizations Collector', width: 350, height: 200)
 
     matrix = FXMatrix.new(self, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL)
-    FXLabel.new(matrix, 'Campus: ')
 
+    FXLabel.new(matrix, 'Campus: ')
     campus_select = FXListBox.new(matrix,
                            opts: LISTBOX_NORMAL|FRAME_SUNKEN|FRAME_THICK|LAYOUT_FILL_X)
     campus_select.numVisible = 5
@@ -36,7 +36,7 @@ class Menu < FXMainWindow
 
     # Step 2 - promote user to select path
     open_dir_btn = FXButton.new(matrix, 'Save To: ', opts: BUTTON_NORMAL)
-    path_input = FXTextField.new(matrix, 30, opts: TEXTFIELD_READONLY)
+    path_input = FXTextField.new(matrix, 30)
     path = nil
     open_dir_btn.connect(SEL_COMMAND) do
       dialog = FXDirDialog.new(matrix, 'Choose Directory')
@@ -48,24 +48,32 @@ class Menu < FXMainWindow
     end
 
     # Step 3 - promote user to enter search keywords
-    FXLabel.new(matrix, 'Org Title: ')
-    org_title_input = FXTextField.new(matrix, 30)
+    FXLabel.new(matrix, 'Keyword: ')
+    keyword_input = FXTextField.new(matrix, 30)
+
+    # create progress report
+    FXLabel.new(matrix, 'Status')
+    status = FXText.new(matrix, opts: LAYOUT_FILL | TEXT_READONLY | TEXT_WORDWRAP)
 
     # Step 4 - user clicked the button
     submit_button = FXButton.new(matrix, 'Collect')
     submit_button.connect(SEL_COMMAND) do
       selected_campus = campus_arr[campus_select.currentItem]
-      org_title = org_title_input.to_s.chomp
-      request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape org_title}"
+      keyword = keyword_input.to_s.chomp
+      request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape keyword}"
       puts request_url
 
       # create orgs array
       orgs = []
       get_org_list request_url, orgs
 
+      # output workload
+      status.appendText(page.search('//form/div/h3').text.split.join(' '))
+      status.appendText('In Progress')
+
       # output
-      puts orgs.to_s
-      puts path
+      status.removeText(0, status.length)
+      status.appendText('Success')
     end
   end
 

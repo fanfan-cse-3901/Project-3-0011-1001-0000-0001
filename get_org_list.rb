@@ -15,6 +15,9 @@ def get_org_list request_url, orgs
   # scraping from 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org?v=list&c=Columbus'
   page = agent.get request_url
 
+  # output workload
+  puts page.search('//form/div/h3').text.split.join(' ')
+
   page.links.each do |link|
     # construct url via current_id:
     # org_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{current_id}"
