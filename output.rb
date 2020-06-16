@@ -6,6 +6,8 @@ Handles various output methods.
 =end
 
 require './org.rb'
+require 'rubygems'
+# require 'launchy'
 
 # Created on 06/10/2020 by Kevin Dong
 # Public: Choose between different outputs given pruned orgs list
@@ -19,7 +21,7 @@ def output_handler orgs
     return
   end
 
-  puts "[1] Console\n[2] File"
+  puts "[1] Console\n[2] File\n[3] HTML"
   loop do
     print 'Selection: '
     sel = gets.to_i
@@ -27,6 +29,7 @@ def output_handler orgs
 
     output_console orgs if sel == 1
     output_file orgs if sel == 2
+    output_html orgs if sel == 3
     break
   end
 end
@@ -56,3 +59,95 @@ def output_file orgs
   end
   puts 'File created at /testing/Organizations.txt'
 end
+
+# Created on 06/15/2020 by Amanda Cheng
+# Internal: Outputs Org Object info to html file
+#
+# orgs - Array of Org Hashes
+# attr - Array of String Attributes that User Selected
+# rec - Array of Recommended Orgs Arrays (Name for element 0, url for element 1)
+# Returns nothing.
+def output_html orgs, attr, rec
+  file = File.open './testing/Organizations.html', 'w' do |line|
+    line.puts '<html lang = "en">'
+    line.puts '<head>'
+    # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
+    line.puts '<title>Your OSU Organizations</title>'
+    line.puts '</head>'
+    line.puts '<body>'
+    line.puts '<h1>List of Organizations</h1>'
+    line.puts '<p> Here are the OSU Organizations you selected. Your Recommended Orgs are at the bottom. </p>'
+    orgs.each do |org|
+      # Output the name first.
+      line.puts "<h3> #{org['name'].to_s} </h3>"
+      line.puts '<ul>'
+      # Go through each attribute array and only print out necessary attributes
+      attr.each do |attr|
+        line.puts "<li>#{attr}:</li>"
+        line.puts "<p>#{org[attr].to_s}</p>"
+      end
+      line.puts '</ul>'
+    end
+    line.puts '<br />'
+    line.puts '<h2>Recommended for You</h2>'
+    # Output an unordered list of recommended organizations and their urls
+    line.puts '<ul>'
+    rec.each do |rec|
+      line.puts "<li>#{rec[0]}</li>"
+      line.puts "<p>#{rec[1]}</p>"
+    end
+    line.puts '</ul>'
+    line.puts '</body>'
+    line.puts '</html>'
+  end
+  puts 'File created at /testing/Organizations.txt'
+# Launchy::Browser.run('./testing/Organizations.html')
+end
+
+# file = File.open './testing/Organizations.html', 'w' do |line|
+#   # line.puts '<?xml version="1.0" encoding="ISO-8859-1" ?>'
+#   # line.puts '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
+#   line.puts '<html lang = "en">'
+#   line.puts '<head>'
+#   # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
+#   line.puts '<title>OSU Organizations</title>'
+#   line.puts '</head>'
+#   line.puts '<body>'
+#   line.puts '<h1>List of Organization</h1>'
+#   line.puts '<p> Here are your Organizations. Your Recommended Orgs are at the bottom </p>'
+#   #orgs.each do |org|
+#     # Output the name first.
+#     line.puts "<h3> Waterski </h3>"
+#     line.puts '<ul>'
+#     # Go through each attribute array and only print out necessary attributes
+#     # attr.each do |attr|
+#       line.puts "<li>Campus:</li>"
+#       line.puts "<p>Columbus</p>"
+#   line.puts "<li>Constitution:</li>"
+#   line.puts "<p>google.com</p>"
+#     # end
+#     line.puts '</ul>'
+#   #end
+#   line.puts "<h3> Waffle House Club </h3>"
+#   line.puts '<ul>'
+#   # Go through each attribute array and only print out necessary attributes
+#   # attr.each do |attr|
+#   line.puts "<li>Campus:</li>"
+#   line.puts "<p>Newark</p>"
+#   line.puts "<li>Constitution:</li>"
+#   line.puts "<p>google.com</p>"
+#   # end
+#   line.puts '</ul>'
+#   line.puts '<br />'
+#   line.puts '<h2>Recommended for You</h2>'
+#   # Output an unordered list of recommended organizations
+#   line.puts '<ul>'
+#   #rec.each do |rec|
+#     line.puts "<li>Snowboarding Club </li>"
+#   #end
+#   line.puts '</ul>'
+#   line.puts '</body>'
+#   line.puts '</html>'
+# end
+# puts 'File created at /testing/Organizations.txt'
+# # Launchy::Browser.run('./testing/Organizations.html')
