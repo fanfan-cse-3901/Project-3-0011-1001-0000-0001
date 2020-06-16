@@ -22,6 +22,8 @@ def get_org_list request_url, orgs
     # construct url via current_id:
     # org_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{current_id}"
     current_id = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/.match(link.href).to_s
-    orgs << Org.new(current_id) unless current_id.empty?
+    hash = Hash.new{|h,k| h[k] = 'N/A'}
+    # orgs << Org.new(current_id) unless current_id.empty?
+    orgs << hash
   end
 end
