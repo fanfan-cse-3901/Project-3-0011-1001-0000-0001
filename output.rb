@@ -7,15 +7,15 @@ Handles various output methods.
 
 require './org.rb'
 require 'rubygems'
-# require 'launchy'
 
 # Created on 06/10/2020 by Kevin Dong
+# Edited on 06/15/2020 by Amanda Cheng: Introduced extra functionality to html file and introduced 2 new parameters
 # Public: Choose between different outputs given pruned orgs list
 #
 # orgs - array of org objects
 # 
 # Returns nothing.
-def output_handler orgs
+def output_handler orgs, attr, rec
   if orgs.empty?
     puts 'Nothing to output'
     return
@@ -28,8 +28,12 @@ def output_handler orgs
     next unless sel >= 1 && sel <= 2
 
     output_console orgs if sel == 1
-    output_file orgs if sel == 2
-    output_html orgs, attr, rec if sel == 3
+    if sel > 1
+      print 'Output File Path (include correct extensions): '
+      path = gets.chomp
+      output_file orgs, path if sel == 2
+      output_html orgs, attr, rec, path if sel == 3
+    end
     break
   end
 end
@@ -50,14 +54,16 @@ end
 # orgs - Array of Org Objects
 #
 # Returns nothing.
-def output_file orgs
-  file = File.open './testing/Organizations.txt', 'w' do |line|
+def output_file orgs, path
+  file = File.open path, 'w' do |line|
     orgs.each do |org|
-      line.puts org.to_s
-      line.puts
+      org.each do |key, value|
+        line.puts "#{key}: #{value}"
+        line.puts
+      end
     end
   end
-  puts 'File created at /testing/Organizations.txt'
+  puts "File created at #{path}"
 end
 
 # Created on 06/15/2020 by Amanda Cheng
@@ -66,10 +72,11 @@ end
 # orgs - Array of Org Hashes
 # attr - Array of String Attributes that User Selected
 # rec - Array of Recommended Orgs Arrays (Name for element 0, url for element 1)
+#
 # Returns nothing.
-def output_html orgs, attr, rec
-  file = File.open './testing/Organizations.html', 'w' do |line|
-    line.puts '<html lang = "en">'
+def output_html orgs, attr, rec, path
+  file = File.open path, 'w' do |line|
+    line.puts '<html lang="en">'
     line.puts '<head>'
     # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
     line.puts '<title>Your OSU Organizations</title>'
@@ -79,19 +86,18 @@ def output_html orgs, attr, rec
     line.puts '<p> Here are the OSU Organizations you selected. Your Recommended Orgs are at the bottom. </p>'
     orgs.each do |org|
       # Output the name first.
-      line.puts "<h3> #{org['name'].to_s} </h3>"
+      line.puts "<h3> #{org['name']} </h3>"
       line.puts '<ul>'
       # Go through each attribute array and only print out necessary attributes
       attr.each do |attr|
         # 'Types'
         if attr == 'Primary Type'
-          line.puts "<li>#{attr}: #{org['Types'][0].to_s}</li>"
+          line.puts "<li>#{attr}: #{org['Types'][0]}</li>"
         elsif attr == 'Secondary Types'
-          line.puts "<li>#{attr}: #{org['Types'][1...org['Types'].length].to_s}</li>"
+          line.puts "<li>#{attr}: #{org['Types'][1...org['Types'].length]}</li>"
         else
-          line.puts "<li>#{attr}: #{org[attr].to_s}</li>"
+          line.puts "<li>#{attr}: #{org[attr]}</li>"
         end
-        # line.puts "<p>#{org[attr].to_s}</p>"
       end
       line.puts '</ul>'
     end
@@ -107,8 +113,7 @@ def output_html orgs, attr, rec
     line.puts '</body>'
     line.puts '</html>'
   end
-  puts 'File created at /testing/Organizations.txt'
-# Launchy::Browser.run('./testing/Organizations.html')
+  puts "File created at #{path}"
 end
 
 # file = File.open './testing/Organizations.html', 'w' do |line|
