@@ -350,7 +350,3 @@ module Searching
   end
 
 end
-
-agent = Mechanize.new
-page = agent.get 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list'
-puts Searching.att_getter

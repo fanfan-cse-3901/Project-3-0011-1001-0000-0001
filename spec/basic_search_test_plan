@@ -25,7 +25,7 @@ Test cases for category:
 1) 0 (All categories)
 2) 3, -1 (Community Service/Service Learning category)
 3) 6, 11, abe0, 5, -1(Ethnic/Cultural,Governance Organizations, Special Interest categories)
-Results: All test cases fail. When 0 is entered the second time, it stops running without outputting anything.
+Results: OK.
 
 Test cases for test type:
 1) 1 (all)
