@@ -13,6 +13,8 @@ require 'rubygems'
 # Public: Choose between different outputs given pruned orgs list
 #
 # orgs - array of org objects
+# attr - Array of String Attributes that User Selected
+# rec - Array of Recommended Orgs Arrays (Name for element 0, url for element 1)
 # 
 # Returns nothing.
 def output_handler orgs, attr, rec
@@ -39,19 +41,26 @@ def output_handler orgs, attr, rec
 end
 
 # Created on 06/10/2020 by Kevin Dong
+# Edited on 06/15/2020 by Amanda Cheng: Updated output to deal with hash
 # Internal: Outputs Org object info to console
 #
 # orgs - Array of Org Objects
 #
 # Returns nothing.
 def output_console orgs
-  orgs.each { |org| puts org }
+  orgs.each do |org|
+    org.each do |key, value|
+      puts "#{key}: #{value}"
+    end
+  end
 end
 
 # Created on 06/11/2020 by Kevin Dong
+# Edited on 06/15/2020 by Amanda Cheng: Updated output to deal with hash
 # Internal: Outputs Org Object info to file
 #
 # orgs - Array of Org Objects
+# path - filename
 #
 # Returns nothing.
 def output_file orgs, path
@@ -72,6 +81,7 @@ end
 # orgs - Array of Org Hashes
 # attr - Array of String Attributes that User Selected
 # rec - Array of Recommended Orgs Arrays (Name for element 0, url for element 1)
+# path - filename
 #
 # Returns nothing.
 def output_html orgs, attr, rec, path
