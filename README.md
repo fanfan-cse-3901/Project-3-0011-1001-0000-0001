@@ -30,3 +30,37 @@
 * Systems Testing:
 
 ### How to make to work
+
+#### Step 1: Install Dependencies
+
+```
+# Debian/Ubuntu
+$ gem install bundler
+$ sudo apt install g++ libxrandr-dev libfox-1.6-dev
+
+# macOS
+$ gem install bundler
+$ brew install g++ fox
+$ brew cask install xquartz
+```
+
+#### Step 2: Install Gem Package
+
+```
+# Debian/Ubuntu/CentOS
+$ bundle install
+
+# macOS
+$ sudo bundle install
+```
+
+#### :beers: Step 3: Enjoy :beers:
+
+```
+# command line interface
+$ ruby main.rb
+
+# GUI to scrapping everything via keywords to JSON
+# ATTN macOS - run XQuartz before calling ./GUI/gui.rb
+$ ruby GUI/gui.rb 
+```
