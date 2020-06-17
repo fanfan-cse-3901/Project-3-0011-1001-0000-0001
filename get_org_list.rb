@@ -26,6 +26,7 @@ def get_org_list request_url, orgs
     current_id = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/.match(link.href).to_s
     org = Hash.new { |h, k| h[k] = 'N/A' }
     org['id'] = current_id
+    org['Types'] = []
     orgs << org unless current_id.empty?
   end
 end

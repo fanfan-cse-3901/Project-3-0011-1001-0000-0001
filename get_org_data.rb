@@ -114,9 +114,13 @@ def get_org_attr orgs, attr
 
     # store into name object
     org['Name'] = name.text
-    (0...table.length).each do |count|
-      combo = table[count].text.split(':')
-      org[combo[0]] = attr_parse combo, attr
+    (0...table.length).each do |i|
+      combo = table[i].text.split(':')
+      if combo[0] == 'Primary Type' || combo[0] == 'Secondary Type'
+        org['Types'] = combo[1...combo.length].split('</br>')
+      else
+        org[combo[0]] = attr_parse combo, attr
+      end
     end
     print '█'
   end
@@ -132,9 +136,10 @@ end
 #
 # Returns string of value.
 def attr_parse attr_line, attr
-  if attr_line[0] == 'Facebook' || attr_line == 'Website'
+  if attr_line[0] == 'Facebook' || attr_line[0] == 'Website'
     link = attr_line[1...attr_line.length]
-    attr_line[1] = link.reduce { |whole, seg| whole.strip + ':' + seg.strip }
+    return link.reduce { |whole, seg| whole.strip + ':' + seg.strip }
   end
+
   attr_line[1].strip if attr.include? attr_line[0]
 end
