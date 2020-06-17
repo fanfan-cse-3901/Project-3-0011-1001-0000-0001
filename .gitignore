@@ -3,3 +3,4 @@
 **/bin
 **/Gemfile.lock
 testing/Organizations.txt
+spec/basic_search_spec.rb
