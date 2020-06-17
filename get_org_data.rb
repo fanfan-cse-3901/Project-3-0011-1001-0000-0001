@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 # File created 06/11/2020 by Yifan Yao: created URL
-# Edited 06/11/2020 by Amanda Cheng: Reconstructed entire get_org_data and stored every information into Org Object
+# Edited 06/11/2020 by Amanda Cheng: get_org_data method
 # Edited 06/14/2020 by Kevin Dong: get_org_attr method
+# Edited 06/15/2020 by Kevin Dong: get_org_data method edit
 require 'mechanize'
 require './org.rb'
 
+# Created on 06/11/2020 by Yifan Yao
+# Edited on 06/11/2020 by Amanda Cheng: Reconstructed entire get_org_data and stored every information into Org Object
+# Edited on 06/11/2020 by Kevin Dong: Hash adjustments
 # Public: Process the student organizations by unique identifier, then store data into object.
 #
 # orgs - array to store Orgs
@@ -24,25 +28,27 @@ def get_org_data orgs
     name = page.search('//div/h4')
     table = page.search('//form/div/table/tr')
     # store into name object
-    i.name = name.text
+    i['Name'] = name.text
     count = 0
     while count < table.length
       combo = table[count].text.split(':')
       if combo[0].include? 'Campus'
-        i.campus = combo[1].strip
+        i['Campus'] = combo[1].strip
         # puts i.campus
       elsif combo[0].include? 'Status'
-        i.status = combo[1].strip
-      elsif combo[0].include? 'Purpose'
-        i.purpose = combo[1].strip
+        i['Status'] = combo[1].strip
+      elsif combo[0].include? 'Purpose Statement'
+        i['Purpose Statement'] = combo[1].strip
       elsif combo[0].include? 'Primary Leader'
-        i.p_leader = combo[1].strip
-      elsif combo[0].include? 'Treas'
-        i.t_leader = combo[1].strip
+        i['Primary Leader'] = combo[1].strip
+      elsif combo[0].include? 'Secondary Leader'
+        i['Secondary Leader'] = combo[1].strip
+      elsif combo[0].include? 'Treasurer Leader'
+        i['Treasurer Leader'] = combo[1].strip
       elsif combo[0].include? 'Advisor'
-        i.advisor = combo[1].strip
-      elsif combo[0].include? 'Email'
-        i.email = combo[1].strip
+        i['Advisor'] = combo[1].strip
+      elsif combo[0].include? 'Organization Email'
+        i['Organization Email'] = combo[1].strip
       elsif combo[0].include? 'Website'
         # Since we split by :, links often have : so we repatch it here
         link_count = 2
@@ -51,9 +57,9 @@ def get_org_data orgs
           link += ':' + combo[link_count].strip
           link_count += 1
         end
-        i.website = link
+        i['Website'] = link
       # puts i.website
-      elsif combo[0].include? 'Facebook'
+      elsif combo[0].include? 'Facebook Group Page'
         # Since we split by :, links often have : so we repatch it here
         link_count = 2
         link = combo[1].strip
@@ -61,33 +67,30 @@ def get_org_data orgs
           link += ':' + combo[link_count].strip
           link_count += 1
         end
-        i.facebook = link
-      # puts i.facebook
-      elsif combo[0].include? 'Primary Type'
-        i.p_type = combo[1].strip
-      elsif combo[0].include? 'Secondary Type'
-        i.s_type = combo[1].strip
-      elsif combo[0].include? 'Make Up'
-        i.make_up = combo[1].strip
+        i['Facebook Group Page'] = link
+      # puts i.facebook 
+      elsif combo[0] == 'Primary Type' || combo[0] == 'Secondary Type'
+        i['Types'].push combo[1...combo.length].split '</br>'
+      elsif combo[0].include? 'Primary Make Up'
+        i['Primary Make Up'] = combo[1].strip
       elsif combo[0].include? 'Constitution'
-        i.constitution = combo[1].strip
-      elsif combo[0].include? 'Meeting Time'
-        i.time_place = combo[1].strip
+        i['Constitution'] = combo[1].strip
+      elsif combo[0].include? 'Meeting Time and Place'
+        i['Meeting Time and Place'] = combo[1].strip
       elsif combo[0].include? 'Office Location'
-        i.office_location = combo[1].strip
+        i['Office Location'] = combo[1].strip
       elsif combo[0].include? 'Membership Type'
-        i.membership_type = combo[1].strip
+        i['Membership Type'] = combo[1].strip
       elsif combo[0].include? 'Membership Contact'
-        i.membership_contact = combo[1].strip
-      elsif combo[0].include? 'Time of Year'
-        i.new_membership_time = combo[1].strip
-      elsif combo[0].include? 'How'
-        i.how_to_apply = combo[1].strip
-      elsif combo[0].include? 'Charge'
-        i.charge_dues = combo[1].strip
+        i['Membership Contact'] = combo[1].strip
+      elsif combo[0].include? 'Time of Year for New Membership'
+        i['Time of Year for New Membership'] = combo[1].strip
+      elsif combo[0].include? 'How does a Prospective Member Apply'
+        i['How does a Prospective Member Apply'] = combo[1].strip
+      elsif combo[0].include? 'Charge Dues'
+        i['Charge Dues'] = combo[1].strip
       end
       count += 1
-
     end
     print '█'
   end
@@ -115,9 +118,9 @@ def get_org_attr orgs, attr
     # store into name object
     org['Name'] = name.text
     (0...table.length).each do |i|
-      combo = table[i].text.split(':')
+      combo = table[i].text.split ':'
       if combo[0] == 'Primary Type' || combo[0] == 'Secondary Type'
-        org['Types'] = combo[1...combo.length].split('</br>')
+        org['Types'].push combo[1...combo.length].split '</br>'
       else
         org[combo[0]] = attr_parse combo, attr
       end
@@ -136,7 +139,7 @@ end
 #
 # Returns string of value.
 def attr_parse attr_line, attr
-  if attr_line[0] == 'Facebook' || attr_line[0] == 'Website'
+  if attr_line[0] == 'Facebook Group Page' || attr_line[0] == 'Website'
     link = attr_line[1...attr_line.length]
     return link.reduce { |whole, seg| whole.strip + ':' + seg.strip }
   end

@@ -7,7 +7,6 @@ Main file.
 =end
 
 require 'mechanize'
-require './org.rb'
 require './basic_search.rb'
 require './get_org_list.rb'
 require './get_org_data.rb'

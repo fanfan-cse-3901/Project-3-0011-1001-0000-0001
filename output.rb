@@ -4,8 +4,6 @@
 =begin
 Handles various output methods.
 =end
-
-require './org.rb'
 require 'rubygems'
 
 # Created on 06/10/2020 by Kevin Dong
@@ -18,23 +16,20 @@ require 'rubygems'
 # 
 # Returns nothing.
 def output_handler orgs, attr, rec
-  if orgs.empty?
-    puts 'Nothing to output'
-    return
-  end
+  return puts 'Nothing to output' if orgs.empty?
 
   puts "[1] Console\n[2] File\n[3] HTML"
   loop do
     print 'Selection: '
-    sel = gets.to_i
-    next unless sel >= 1 && sel <= 2
+    sel = gets
+    next unless /[1-3]/.match sel
 
-    output_console orgs if sel == 1
-    if sel > 1
+    output_console orgs if sel.to_i == 1
+    if sel.to_i > 1
       print 'Output File Path (include correct extensions): '
       path = gets.chomp
-      output_file orgs, path if sel == 2
-      output_html orgs, attr, rec, path if sel == 3
+      output_file orgs, path if sel.to_i == 2
+      output_html orgs, attr, rec, path if sel.to_i == 3
     end
     break
   end
@@ -52,6 +47,7 @@ def output_console orgs
     org.each do |key, value|
       puts "#{key}: #{value}"
     end
+    puts
   end
 end
 
@@ -68,8 +64,8 @@ def output_file orgs, path
     orgs.each do |org|
       org.each do |key, value|
         line.puts "#{key}: #{value}"
-        line.puts
       end
+      line.puts
     end
   end
   puts "File created at #{path}"
@@ -173,3 +169,4 @@ end
 # end
 # puts 'File created at /testing/Organizations.txt'
 # # Launchy::Browser.run('./testing/Organizations.html')
+
