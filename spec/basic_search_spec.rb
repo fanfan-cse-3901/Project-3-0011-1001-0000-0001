@@ -4,7 +4,7 @@
 
 # Edited on 06/12/2020 by Prachiti Garge: Added test cases
 # Edited on 06/14/2020 by Prachiti Garge: Debugged StringIO for multiple inputs
-
+# DO NOT RUN. WILL GIVE ERRORS. INSTEAD, REFERENCE basic_search_test_plan.txt
 require './basic_search'
 require 'spec_helper'
 require 'rspec'
@@ -47,7 +47,7 @@ RSpec.describe Searching do
       $stdin = in4
       expect(Searching.get_campus page).to(eq('&c=Mansfield'))
       $stdin = STDIN
-      in4.close
+        in4.close
     end
   end
 

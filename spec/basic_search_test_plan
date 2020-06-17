@@ -1,0 +1,52 @@
+# Created on 06/17/2020 by Prachiti Garge: To replace the rspec framework
+
+Test cases for campus:
+1) 1 (All)
+2) 3 (Lima)
+3) 7 (Wooster)
+4) 8, 4 (Mansfield)
+Results: OK.
+
+Test cases for directory:
+1) 1 (Numbers)
+2) S (S)
+3) 0 (All)
+4) abc, ff, f (F)
+Results: OK.
+
+Test cases for search:
+1) ab74
+2) Bull\'s eye
+3) .\';l\'.;\'4r\\
+4) \n
+Results: OK.
+
+Test cases for category:
+1) 0 (All categories)
+2) 3, -1 (Community Service/Service Learning category)
+3) 6, 11, abe0, 5, -1(Ethnic/Cultural,Governance Organizations, Special Interest categories)
+Results: All test cases fail. When 0 is entered the second time, it stops running without outputting anything.
+
+Test cases for test type:
+1) 1 (all)
+2) 3 (purpose)
+3) How are you?, 2 (name)
+Results: OK.
+
+Test cases for registration window:
+1) 1 (all)
+2) 2 (spring)
+3) Bamboozled, 3 (Autumn)
+Results: OK.
+
+Test cases for showing inactive organizations:
+1) y (yes)
+2) N (no)
+3) Kaboom98, n (no)
+Results: OK.
+
+Test cases for attribute choosing:
+1) 0 (all)
+2) 4, 8, 2, -1 (a few)
+3) -1 (none)
+Results: OK.
