@@ -29,7 +29,7 @@ def output_handler orgs
 
     output_console orgs if sel == 1
     output_file orgs if sel == 2
-    output_html orgs if sel == 3
+    output_html orgs, attr, rec if sel == 3
     break
   end
 end
@@ -83,8 +83,15 @@ def output_html orgs, attr, rec
       line.puts '<ul>'
       # Go through each attribute array and only print out necessary attributes
       attr.each do |attr|
-        line.puts "<li>#{attr}:</li>"
-        line.puts "<p>#{org[attr].to_s}</p>"
+        # 'Types'
+        if attr == 'Primary Type'
+          line.puts "<li>#{attr}: #{org['Types'][0].to_s}</li>"
+        elsif attr == 'Secondary Types'
+          line.puts "<li>#{attr}: #{org['Types'][1...org['Types'].length].to_s}</li>"
+        else
+          line.puts "<li>#{attr}: #{org[attr].to_s}</li>"
+        end
+        # line.puts "<p>#{org[attr].to_s}</p>"
       end
       line.puts '</ul>'
     end
@@ -93,8 +100,8 @@ def output_html orgs, attr, rec
     # Output an unordered list of recommended organizations and their urls
     line.puts '<ul>'
     rec.each do |rec|
-      line.puts "<li>#{rec[0]}</li>"
-      line.puts "<p>#{rec[1]}</p>"
+      line.puts "<li>#{rec[0]}: #{rec[1]}</li>"
+      # line.puts "<p>#{rec[1]}</p>"
     end
     line.puts '</ul>'
     line.puts '</body>'
