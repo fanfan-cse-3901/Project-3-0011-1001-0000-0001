@@ -6,20 +6,22 @@
 require 'fox16'
 require 'mechanize'
 require 'cgi'
+require 'json'
 require './get_org_list'
 
 include Fox
 
 # Class created 06/15/2020 by Yifan Yao
+# Edited 06/17/2020 by Yifan Yao: Complete file output, provide more details for scrapping progress
 class Menu < FXMainWindow
   def initialize(app)
-    super(app, 'OSU Student Organizations Collector', width: 350, height: 200)
+    super(app, 'OSU Student Organizations Collector', width: 380, height: 200)
 
-    matrix = FXMatrix.new(self, 2, MATRIX_BY_COLUMNS|LAYOUT_FILL)
+    matrix = FXMatrix.new(self, 2, MATRIX_BY_COLUMNS | LAYOUT_FILL)
 
     FXLabel.new(matrix, 'Campus: ')
     campus_select = FXListBox.new(matrix,
-                           opts: LISTBOX_NORMAL|FRAME_SUNKEN|FRAME_THICK|LAYOUT_FILL_X)
+                                  opts: LISTBOX_NORMAL | FRAME_SUNKEN | FRAME_THICK | LAYOUT_FILL_X)
     campus_select.numVisible = 5
 
     # Step 1 - get the list of OSU campus
@@ -42,7 +44,7 @@ class Menu < FXMainWindow
       dialog = FXDirDialog.new(matrix, 'Choose Directory')
       if dialog.execute != 0
         time = Time.new
-        path = "#{dialog.directory}/#{time.year}#{time.month}#{time.day}_#{time.hour}#{time.min}#{time.sec}.csv"
+        path = "#{dialog.directory}/#{time.year}#{time.month}#{time.day}_#{time.hour}#{time.min}#{time.sec}.json"
         path_input.text = path
       end
     end
@@ -55,8 +57,22 @@ class Menu < FXMainWindow
     FXLabel.new(matrix, 'Status')
     status = FXText.new(matrix, opts: LAYOUT_FILL | TEXT_READONLY | TEXT_WORDWRAP)
 
+    # Step 3.5 - find orgs
+    pre_submit_button = FXButton.new(matrix, 'Find orgs')
+    pre_submit_button.connect(SEL_COMMAND) do
+      selected_campus = campus_arr[campus_select.currentItem]
+      keyword = keyword_input.to_s.chomp
+      request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape keyword}"
+
+      agent = Mechanize.new
+      page = agent.get request_url
+
+      status.removeText(0, status.length)
+      status.appendText("#{page.search('//form/div/h3').text.split.join(' ')}, click \"Save to JSON\" to get details.")
+    end
+
     # Step 4 - user clicked the button
-    submit_button = FXButton.new(matrix, 'Collect')
+    submit_button = FXButton.new(matrix, 'Save to JSON')
     submit_button.connect(SEL_COMMAND) do
       selected_campus = campus_arr[campus_select.currentItem]
       keyword = keyword_input.to_s.chomp
@@ -66,14 +82,48 @@ class Menu < FXMainWindow
       # create orgs array
       orgs = []
       get_org_list request_url, orgs
+      counter = 0
 
-      # output workload
-      status.appendText(page.search('//form/div/h3').text.split.join(' '))
-      status.appendText('In Progress')
+      orgs.each do |org|
+        agent = Mechanize.new
+        page = agent.get "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org['id']}"
 
-      # output
+        # get values from form via XPath
+        name = page.search('//div/h4')
+        table = page.search('//form/div/table/tr')
+
+        # print progress in console
+        puts "In Progress(#{counter}/#{orgs.length})" if (counter % 15).zero?
+
+        # store into name org pair
+        org['Name'] = name.text
+        # delete attribute Types
+        org.delete('Types')
+
+        # partial code from Kevin's get_org_data.rb w/o attr
+        (0...table.length).each do |i|
+          combo = table[i].text.split(':')
+          key = combo[0].strip
+          if ['Facebook Group Page', 'Website'].include? key
+            link = combo[1...combo.length]
+            value = link.reduce { |whole, seg| whole.strip + ':' + seg.strip }
+          else
+            value = combo[1].strip
+          end
+
+          org[key] = value.strip
+        end
+        counter += 1
+      end
+
+      # JSON file output
+      File.open(path, 'w') do |line|
+        line.puts orgs.to_json
+      end
+
+      # output success message
       status.removeText(0, status.length)
-      status.appendText('Success')
+      status.appendText("Saved to #{path}")
     end
   end
 
