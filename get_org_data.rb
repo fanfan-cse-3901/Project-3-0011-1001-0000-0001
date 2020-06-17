@@ -2,6 +2,7 @@
 
 # File created 06/11/2020 by Yifan Yao: created URL
 # Edited 06/11/2020 by Amanda Cheng: Reconstructed entire get_org_data and stored every information into Org Object
+# Edited 06/14/2020 by Kevin Dong: get_org_attr method
 require 'mechanize'
 require './org.rb'
 
@@ -92,4 +93,53 @@ def get_org_data orgs
   end
   print ']'
   puts
+end
+
+# Created on 06/13/2020 by Kevin Dong
+# Public: Scrapes selected attributes from each org page.
+#
+# orgs - array of hashes that represent the org
+# attr - array of attributes to scrape
+#
+# Updates orgs with more key-value pairs per org hash
+def get_org_attr orgs, attr
+  print 'SCRAPING: ['
+  orgs.each do |org|
+    agent = Mechanize.new
+    page = agent.get "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org.id}"
+
+    # get values from form via XPath
+    name = page.search('//div/h4')
+    table = page.search('//form/div/table/tr')
+
+    # store into name object
+    org['Name'] = name.text
+    (0...table.length).each do |i|
+      combo = table[i].text.split(':')
+      if combo[0] == 'Primary Type' || combo[0] == 'Secondary Type'
+        org['Types'] = combo[1...combo.length].split('</br>')
+      else
+        org[combo[0]] = attr_parse combo, attr
+      end
+    end
+    print '█'
+  end
+  print ']'
+  puts
+end
+
+# Created on 06/13/2020 by Kevin Dong
+# Internal: Updates attribute if in attr
+#
+# attr_line - Array containing attribute name and value
+# attr - array of attributes
+#
+# Returns string of value.
+def attr_parse attr_line, attr
+  if attr_line[0] == 'Facebook' || attr_line[0] == 'Website'
+    link = attr_line[1...attr_line.length]
+    return link.reduce { |whole, seg| whole.strip + ':' + seg.strip }
+  end
+
+  attr_line[1].strip if attr.include? attr_line[0]
 end

@@ -20,5 +20,5 @@ puts url
 orgs = [] # orgs - array to store Org objects
 get_org_list url, orgs # stores objects into array orgs
 puts 'GOT LIST'
-get_org_data orgs # populates Org objects with respective data
+get_org_attr orgs # populates Org objects with respective data
 output_handler orgs # display all Orgs
