@@ -19,7 +19,7 @@ module Recommendations
   def get_rec url_from_bs, orgs
     ret_arr = []
     # If no m= portion, don't provide any recommendations
-    return ret_arr if /^&m=$/.match(url_from_bs).to_s.empty?
+    return ret_arr if /&m=/.match(url_from_bs).to_s.empty?
 
     # Else
     # Clusters of categories
