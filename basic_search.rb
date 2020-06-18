@@ -83,6 +83,7 @@ module Searching
     end
 
     # Form string and return
+    campuses[input.to_i - 1] = campuses[input.to_i - 1].downcase if campuses[input.to_i - 1].downcase == 'all'
     ret = "&c=#{campuses[input.to_i - 1]}"
     ret
   end

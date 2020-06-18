@@ -18,11 +18,10 @@
 * Scrape volunteer events: Troy Stein
 
 #### Extra Functionality
-* Organization recommendation system: Prachiti Garge
+* Organization Recommendation System: Prachiti Garge
 * GUI: Yifan Yao
 * HTML output: Amanda Cheng
-* Selective attribute display : Kevin Dong
-* Volunteer event recommendation system: Troy Stein
+* Selective Attribute Display : Kevin Dong
 
 #### Testing
 * Unit testing module Searching with test plan: Prachiti Garge
@@ -64,3 +63,4 @@ $ ruby main.rb
 # ATTN macOS - run XQuartz before calling ./GUI/gui.rb
 $ ruby GUI/gui.rb 
 ```
+
