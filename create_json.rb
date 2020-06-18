@@ -9,37 +9,37 @@ require './org.rb'
 # file : name of .json file for json
 #
 #Returns nothing
-def create_json orgs, file
-orgs = [Org.new(0), Org.new(1),Org.new(2), Org.new(3), Org.new('kevin'), Org.new('Prachiti'), Org.new("T-roy9"), Org.new("yifan"),Org.new('AmAndA')]
-File.write file,"{ \n"
-orgs.each do |n|
-  puts 'iter'
-  File.write file,"\t\"#{orgs[n].name}\" : { \n", mode:'a'
-  File.write file, "\t\t\"id\" : \"#{orgs[n].id}\",\n", mode:'a'
-  File.write file, "\t\t\"campus\" : \"#{orgs[n].campus}\",\n", mode:'a'
-  File.write file, "\t\t\"status\" : \"#{orgs[n].status}\",\n", mode:'a'
-  File.write file, "\t\t\"purpose\" : \"#{orgs[n].purpose}\",\n", mode:'a'
-  File.write file, "\t\t\"p_leader\" : \"#{orgs[n].p_leader}\",\n", mode:'a'
-  File.write file, "\t\t\"s_leader\" : \"#{orgs[n].s_leader}\",\n", mode:'a'
-  File.write file, "\t\t\"t_leader\" : \"#{orgs[n].t_leader}\",\n", mode:'a'
-  File.write file, "\t\t\"advisor\" : \"#{orgs[n].advisor}\",\n", mode:'a'
-  File.write file, "\t\t\"email\" : \"#{orgs[n].email}\",\n", mode:'a'
-  File.write file, "\t\t\"website\" : \"#{orgs[n].website}\",\n", mode:'a'
-  File.write file, "\t\t\"facebook\" : \"#{orgs[n].facebook}\",\n", mode:'a'
-  File.write file, "\t\t\"p_type\" : \"#{orgs[n].p_type}\",\n", mode:'a'
-  File.write file, "\t\t\"s_type\" : \"#{orgs[n].s_type}\",\n", mode:'a'
-  File.write file, "\t\t\"make_up\" : \"#{orgs[n].make_up}\",\n", mode:'a'
-  File.write file, "\t\t\"constitution\" : \"#{orgs[n].constitution}\",\n", mode:'a'
-  File.write file, "\t\t\"time_place\" : \"#{orgs[n].time_place}\",\n", mode:'a'
-  File.write file, "\t\t\"office_location\" : \"#{orgs[n].office_location}\",\n", mode:'a'
-  File.write file, "\t\t\"membership_type\" : \"#{orgs[n].membership_type}\",\n", mode:'a'
-  File.write file, "\t\t\"membership_contact\" : \"#{orgs[n].membership_contact}\",\n", mode:'a'
-  File.write file, "\t\t\"new_membership_time\" : \"#{orgs[n].new_membership_time}\",\n", mode:'a'
-  File.write file, "\t\t\"how_to_apply\" : \"#{orgs[n].how_to_apply}\",\n", mode:'a'
-  File.write file, "\t\t\"charge_dues\" : \"#{orgs[n].charge_dues}\"\n", mode:'a'
-  File.write file, "\t}", mode:'a'
-  File.write file, ',', mode:'a' if n+1 != orgs.length
-  File.write file, "\n", mode:'a'
-end
-File.write file, '}', mode:'a'
+def create_json(orgs, file)
+  File.write file, "{ \n"
+  keys = orgs.keys
+  orgs.each do |n|
+    puts "#{n}"
+    File.write file, "\t\"#{n[0]}\" : { \n", mode: 'a'
+    File.write file, "\t\t\"id\" : \"#{n[1].id}\",\n", mode: 'a'
+    File.write file, "\t\t\"campus\" : \"#{n[1].campus}\",\n", mode: 'a'
+    File.write file, "\t\t\"status\" : \"#{n[1].status}\",\n", mode: 'a'
+    File.write file, "\t\t\"purpose\" : \"#{n[1].purpose}\",\n", mode: 'a'
+    File.write file, "\t\t\"p_leader\" : \"#{n[1].p_leader}\",\n", mode: 'a'
+    File.write file, "\t\t\"s_leader\" : \"#{n[1].s_leader}\",\n", mode: 'a'
+    File.write file, "\t\t\"t_leader\" : \"#{n[1].t_leader}\",\n", mode: 'a'
+    File.write file, "\t\t\"advisor\" : \"#{n[1].advisor}\",\n", mode: 'a'
+    File.write file, "\t\t\"email\" : \"#{n[1].email}\",\n", mode: 'a'
+    File.write file, "\t\t\"website\" : \"#{n[1].website}\",\n", mode: 'a'
+    File.write file, "\t\t\"facebook\" : \"#{n[1].facebook}\",\n", mode: 'a'
+    File.write file, "\t\t\"p_type\" : \"#{n[1].p_type}\",\n", mode: 'a'
+    File.write file, "\t\t\"s_type\" : \"#{n[1].s_type}\",\n", mode: 'a'
+    File.write file, "\t\t\"make_up\" : \"#{n[1].make_up}\",\n", mode: 'a'
+    File.write file, "\t\t\"constitution\" : \"#{n[1].constitution}\",\n", mode: 'a'
+    File.write file, "\t\t\"time_place\" : \"#{n[1].time_place}\",\n", mode: 'a'
+    File.write file, "\t\t\"office_location\" : \"#{n[1].office_location}\",\n", mode: 'a'
+    File.write file, "\t\t\"membership_type\" : \"#{n[1].membership_type}\",\n", mode: 'a'
+    File.write file, "\t\t\"membership_contact\" : \"#{n[1].membership_contact}\",\n", mode: 'a'
+    File.write file, "\t\t\"new_membership_time\" : \"#{n[1].new_membership_time}\",\n", mode: 'a'
+    File.write file, "\t\t\"how_to_apply\" : \"#{n[1].how_to_apply}\",\n", mode: 'a'
+    File.write file, "\t\t\"charge_dues\" : \"#{n[1].charge_dues}\"\n", mode: 'a'
+    File.write file, "\t}", mode: 'a'
+    File.write file, ',', mode: 'a' if n[0] != keys [orgs.length() - 1]
+    File.write file, "\n", mode: 'a'
+  end
+  File.write file, '}', mode: 'a'
 end
