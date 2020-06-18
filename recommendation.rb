@@ -16,7 +16,7 @@ module Recommendations
   # orgs - Array of hashes of organizations
   #
   # Created on 06/17/2020 by Prachiti Garge
-  def get_rec url_from_bs, orgs
+  def self.get_rec url_from_bs, orgs
     ret_arr = []
     # If no m= portion, don't provide any recommendations
     return ret_arr if /&m=/.match(url_from_bs).to_s.empty?
@@ -29,22 +29,22 @@ module Recommendations
 
     # Get random org
     rand_org = orgs.sample
-    category = rand_org('Types')[0]
+    category = rand_org['Types'][0]
     category1 = ''
     category2 = ''
     # Get two related categories from appropriate cluster
     if cluster1.include? category
       cluster1.delete category
-      category1 = cluster1.delete cluster1.sample
-      category2 = cluster1.delete cluster1.sample
+      category1 = cluster1.delete (cluster1.sample)
+      category2 = cluster1.delete (cluster1.sample)
     elsif cluster2.include? category
       cluster2.delete category
-      category1 = cluster2.delete cluster2.sample
-      category2 = cluster2.delete cluster2.sample
+      category1 = cluster2.delete (cluster2.sample)
+      category2 = cluster2.delete (cluster2.sample)
     else
       cluster3.delete category
-      category1 = cluster3.delete cluster3.sample
-      category2 = cluster3.delete cluster3.sample
+      category1 = cluster3.delete (cluster3.sample)
+      category2 = cluster3.delete (cluster3.sample)
     end
     # Get the org lists for the two other categories
     page_url1 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/
