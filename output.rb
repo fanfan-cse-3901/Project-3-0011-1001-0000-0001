@@ -68,8 +68,8 @@ def output_file orgs, path
     orgs.each do |org|
       org.each do |key, value|
         line.puts "#{key}: #{value}"
-        line.puts
       end
+      line.puts
     end
   end
   puts "File created at #{path}"
