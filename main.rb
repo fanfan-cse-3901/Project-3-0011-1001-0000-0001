@@ -28,5 +28,6 @@ orgs.each do |i|
 end
 recs = Recommendations.get_rec ins[0], orgs
 puts recs.length
+recs = []
 output_handler orgs, ins[1], recs # display all Orgs
 

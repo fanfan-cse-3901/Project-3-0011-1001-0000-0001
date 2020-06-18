@@ -82,7 +82,8 @@ end
 # Returns nothing.
 def output_html orgs, attr, rec, path
   file = File.open path, 'w' do |line|
-    line.puts '<html lang="en">'
+    line.puts '<!DOCTYPE html>'
+    line.puts '<html lang="en-US">'
     line.puts '<head>'
     # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
     line.puts '<title>Your OSU Organizations</title>'
