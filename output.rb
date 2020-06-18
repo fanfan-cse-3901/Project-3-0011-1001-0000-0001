@@ -139,33 +139,33 @@ end
 #   line.puts '<p> Here are your Organizations. Your Recommended Orgs are at the bottom </p>'
 #   #orgs.each do |org|
 #     # Output the name first.
-#     line.puts "<h3> Waterski </h3>"
-#     line.puts '<ul>'
-#     # Go through each attribute array and only print out necessary attributes
-#     # attr.each do |attr|
-#       line.puts "<li>Campus:</li>"
-#       line.puts "<p>Columbus</p>"
-#   line.puts "<li>Constitution:</li>"
-#   line.puts "<p>google.com</p>"
-#     # end
-#     line.puts '</ul>'
-#   #end
-#   line.puts "<h3> Waffle House Club </h3>"
-#   line.puts '<ul>'
+#   #line.puts "<h3> Waterski </h3>"
+#   #   line.puts '<ul>'
+#   #   # Go through each attribute array and only print out necessary attributes
+#   #   # attr.each do |attr|
+#   #     line.puts "<li>Campus:</li>"
+#   #     line.puts "<p>Columbus</p>"
+#   # line.puts "<li>Constitution:</li>"
+#   # line.puts "<p>google.com</p>"
+#   #   # end
+#   #   line.puts '</ul>'
+#   # #end
+#   # line.puts "<h3> Waffle House Club </h3>"
+#   # line.puts '<ul>'
 #   # Go through each attribute array and only print out necessary attributes
 #   # attr.each do |attr|
-#   line.puts "<li>Campus:</li>"
-#   line.puts "<p>Newark</p>"
-#   line.puts "<li>Constitution:</li>"
-#   line.puts "<p>google.com</p>"
+#   # line.puts "<li>Campus:</li>"
+#   # line.puts "<p>Newark</p>"
+#   # line.puts "<li>Constitution:</li>"
+#   # line.puts "<p>google.com</p>"
 #   # end
-#   line.puts '</ul>'
+#   # line.puts '</ul>'
 #   line.puts '<br />'
 #   line.puts '<h2>Recommended for You</h2>'
 #   # Output an unordered list of recommended organizations
 #   line.puts '<ul>'
 #   #rec.each do |rec|
-#     line.puts "<li>Snowboarding Club </li>"
+#   #   line.puts "<li>Snowboarding Club </li>"
 #   #end
 #   line.puts '</ul>'
 #   line.puts '</body>'
