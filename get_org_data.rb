@@ -149,5 +149,5 @@ def attr_parse attr_line, attr
     return link.reduce { |whole, seg| whole.strip + ':' + seg.strip }
   end
 
-  attr_line[1].strip if attr.include? attr_line[0]
+  attr_line[1].strip if attr.include? attr_line[0].strip
 end

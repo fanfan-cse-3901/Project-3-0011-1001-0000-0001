@@ -82,17 +82,20 @@ end
 # Returns nothing.
 def output_html orgs, attr, rec, path
   file = File.open path, 'w' do |line|
-    line.puts '<html lang="en">'
+    line.puts '<!DOCTYPE html>'
+    line.puts '<html lang="en-US">'
     line.puts '<head>'
     # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
     line.puts '<title>Your OSU Organizations</title>'
     line.puts '</head>'
     line.puts '<body>'
     line.puts '<h1>List of Organizations</h1>'
-    line.puts '<p> Here are the OSU Organizations you selected. Your Recommended Orgs are at the bottom. </p>'
+    line.puts '<p> Here are the OSU Organizations you selected.'
+    line.print ' Recommended orgs at the bottom.' unless rec.empty?
+    line.print ' </p>'
     orgs.each do |org|
       # Output the name first.
-      line.puts "<h3> #{org['name']} </h3>"
+      line.puts "<h3><a href=\"https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org['id']}\">#{org['Name']} </a></h3>"
       line.puts '<ul>'
       # Go through each attribute array and only print out necessary attributes
       attr.each do |attr|
@@ -108,14 +111,16 @@ def output_html orgs, attr, rec, path
       line.puts '</ul>'
     end
     line.puts '<br />'
-    line.puts '<h2>Recommended for You</h2>'
-    # Output an unordered list of recommended organizations and their urls
-    line.puts '<ul>'
-    rec.each do |rec|
-      line.puts "<li>#{rec[0]}: #{rec[1]}</li>"
-      # line.puts "<p>#{rec[1]}</p>"
+    unless rec.empty?
+      line.puts '<h2>Recommended for You</h2>'
+      # Output an unordered list of recommended organizations and their urls
+      line.puts '<ul>'
+      rec.each do |rec|
+        line.puts "<li>#{rec[0]}: #{rec[1]}</li>"
+        # line.puts "<p>#{rec[1]}</p>"
+      end
+      line.puts '</ul>'
     end
-    line.puts '</ul>'
     line.puts '</body>'
     line.puts '</html>'
   end
