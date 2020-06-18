@@ -36,21 +36,13 @@
 # Debian/Ubuntu
 $ gem install bundler
 $ sudo apt install g++ libxrandr-dev libfox-1.6-dev
-
-# macOS
-$ gem install bundler
-$ brew install g++ fox
-$ brew cask install xquartz
 ```
 
 #### Step 2: Install Gem Packages
 
 ```
-# Debian/Ubuntu/CentOS
+# Debian/Ubuntu
 $ bundle install
-
-# macOS
-$ sudo bundle install
 ```
 
 #### :beers: Step 3: Enjoy :beers:
@@ -60,7 +52,6 @@ $ sudo bundle install
 $ ruby main.rb
 
 # GUI to scrapping everything via keywords to JSON
-# ATTN macOS - run XQuartz before calling ./GUI/gui.rb
-$ ruby GUI/gui.rb 
+$ ruby gui.rb 
 ```
 
