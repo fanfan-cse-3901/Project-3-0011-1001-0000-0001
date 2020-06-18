@@ -5,7 +5,6 @@
 # Edited 06/14/2020 by Kevin Dong: get_org_attr method
 # Edited 06/15/2020 by Kevin Dong: get_org_data method edit
 require 'mechanize'
-require './org.rb'
 
 # Created on 06/11/2020 by Yifan Yao
 # Edited on 06/11/2020 by Amanda Cheng: Reconstructed entire get_org_data and stored every information into Org Object
@@ -19,7 +18,7 @@ def get_org_data orgs
   print 'PROCCESSING: ['
   orgs.each do |i|
     # construct data into each object via unique identifier
-    org_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{i.id}"
+    org_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{i['id']}"
 
     agent = Mechanize.new
     page = agent.get org_url
@@ -69,8 +68,11 @@ def get_org_data orgs
         end
         i['Facebook Group Page'] = link
       # puts i.facebook 
-      elsif combo[0] == 'Primary Type' || combo[0] == 'Secondary Type'
-        i['Types'].push combo[1...combo.length].split '</br>'
+      elsif (combo[0].include? 'Primary Type') || (combo[0].include? 'Secondary Types')
+        combo[1].insert(combo[1].index(/[a-z]{1}[A-Z]{1}/) + 1, '*') while combo[1].match?(/[a-z]{1}[A-Z]{1}/)
+        combo[1].split('*').each do |type|
+          (i['Types'].push type.strip).uniq!
+        end
       elsif combo[0].include? 'Primary Make Up'
         i['Primary Make Up'] = combo[1].strip
       elsif combo[0].include? 'Constitution'
@@ -109,20 +111,23 @@ def get_org_attr orgs, attr
   print 'SCRAPING: ['
   orgs.each do |org|
     agent = Mechanize.new
-    page = agent.get "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org.id}"
+    page = agent.get "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org['id']}"
 
     # get values from form via XPath
     name = page.search('//div/h4')
     table = page.search('//form/div/table/tr')
 
     # store into name object
-    org['Name'] = name.text
+    org['Name'] = name.text.strip
     (0...table.length).each do |i|
       combo = table[i].text.split ':'
-      if combo[0] == 'Primary Type' || combo[0] == 'Secondary Type'
-        org['Types'].push combo[1...combo.length].split '</br>'
+      if (combo[0].include? 'Primary Type') || (combo[0].include? 'Secondary Types')
+        combo[1].insert(combo[1].index(/[a-z]{1}[A-Z]{1}/) + 1, '*') while combo[1].match?(/[a-z]{1}[A-Z]{1}/)
+        combo[1].split('*').each do |type|
+          (org['Types'].push type.strip).uniq!
+        end
       else
-        org[combo[0]] = attr_parse combo, attr
+        org[combo[0].strip] = attr_parse combo, attr
       end
     end
     print '█'

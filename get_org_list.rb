@@ -2,7 +2,6 @@
 
 # File created on 06/10/2020 by Yifan Yao
 require 'mechanize'
-require './org.rb'
 
 # Edited on 06/13/2020 by Amanda Cheng: hash instead of org class
 # Edited on 06/14/2020 by Kevin Dong: fixed missing hash features

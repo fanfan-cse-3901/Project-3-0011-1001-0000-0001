@@ -23,3 +23,4 @@ get_org_data orgs if ins[1].length == 21
 get_org_attr orgs, ins[1] if ins[1].length != 21 # populates Org objects with respective data
 recs = Recommendations.get_rec ins[0], orgs
 output_handler orgs, ins[1], recs # display all Orgs
+

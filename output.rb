@@ -26,7 +26,7 @@ def output_handler orgs, attr, rec
 
     output_console orgs if sel.to_i == 1
     if sel.to_i > 1
-      print 'Output File Path (include correct extensions): '
+      print 'Output File Path (include correct extensions & . in front): '
       path = gets.chomp
       output_file orgs, path if sel.to_i == 2
       output_html orgs, attr, rec, path if sel.to_i == 3
