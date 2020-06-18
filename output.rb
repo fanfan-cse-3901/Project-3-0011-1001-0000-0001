@@ -4,8 +4,6 @@
 =begin
 Handles various output methods.
 =end
-
-require './org.rb'
 require 'rubygems'
 
 # Created on 06/10/2020 by Kevin Dong
@@ -18,23 +16,20 @@ require 'rubygems'
 # 
 # Returns nothing.
 def output_handler orgs, attr, rec
-  if orgs.empty?
-    puts 'Nothing to output'
-    return
-  end
+  return puts 'Nothing to output' if orgs.empty?
 
   puts "[1] Console\n[2] File\n[3] HTML"
   loop do
     print 'Selection: '
-    sel = gets.to_i
-    next unless sel >= 1 && sel <= 2
+    sel = gets
+    next unless /[1-3]/.match sel
 
-    output_console orgs if sel == 1
-    if sel > 1
-      print 'Output File Path (include correct extensions): '
+    output_console orgs if sel.to_i == 1
+    if sel.to_i > 1
+      print 'Output File Path (include correct extensions & . in front): '
       path = gets.chomp
-      output_file orgs, path if sel == 2
-      output_html orgs, attr, rec, path if sel == 3
+      output_file orgs, path if sel.to_i == 2
+      output_html orgs, attr, rec, path if sel.to_i == 3
     end
     break
   end
@@ -52,6 +47,7 @@ def output_console orgs
     org.each do |key, value|
       puts "#{key}: #{value}"
     end
+    puts
   end
 end
 
@@ -68,8 +64,8 @@ def output_file orgs, path
     orgs.each do |org|
       org.each do |key, value|
         line.puts "#{key}: #{value}"
-        line.puts
       end
+      line.puts
     end
   end
   puts "File created at #{path}"
@@ -93,10 +89,12 @@ def output_html orgs, attr, rec, path
     line.puts '</head>'
     line.puts '<body>'
     line.puts '<h1>List of Organizations</h1>'
-    line.puts '<p> Here are the OSU Organizations you selected. Your Recommended Orgs are at the bottom. </p>'
+    line.puts '<p> Here are the OSU Organizations you selected.'
+    line.print ' Recommended orgs at the bottom.' unless rec.empty?
+    line.print ' </p>'
     orgs.each do |org|
       # Output the name first.
-      line.puts "<h3> #{org['name']} </h3>"
+      line.puts "<h3><a href=\"https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org['id']}\">#{org['Name']} </a></h3>"
       line.puts '<ul>'
       # Go through each attribute array and only print out necessary attributes
       attr.each do |attr|
@@ -112,64 +110,18 @@ def output_html orgs, attr, rec, path
       line.puts '</ul>'
     end
     line.puts '<br />'
-    line.puts '<h2>Recommended for You</h2>'
-    # Output an unordered list of recommended organizations and their urls
-    line.puts '<ul>'
-    rec.each do |rec|
-      line.puts "<li>#{rec[0]}: #{rec[1]}</li>"
-      # line.puts "<p>#{rec[1]}</p>"
+    unless rec.empty?
+      line.puts '<h2>Recommended for You</h2>'
+      # Output an unordered list of recommended organizations and their urls
+      line.puts '<ul>'
+      rec.each do |rec|
+        line.puts "<li>#{rec[0]}: #{rec[1]}</li>"
+        # line.puts "<p>#{rec[1]}</p>"
+      end
+      line.puts '</ul>'
     end
-    line.puts '</ul>'
     line.puts '</body>'
     line.puts '</html>'
   end
   puts "File created at #{path}"
 end
-
-# file = File.open './testing/Organizations.html', 'w' do |line|
-#   # line.puts '<?xml version="1.0" encoding="ISO-8859-1" ?>'
-#   # line.puts '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">'
-#   line.puts '<html lang = "en">'
-#   line.puts '<head>'
-#   # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
-#   line.puts '<title>OSU Organizations</title>'
-#   line.puts '</head>'
-#   line.puts '<body>'
-#   line.puts '<h1>List of Organization</h1>'
-#   line.puts '<p> Here are your Organizations. Your Recommended Orgs are at the bottom </p>'
-#   #orgs.each do |org|
-#     # Output the name first.
-#     line.puts "<h3> Waterski </h3>"
-#     line.puts '<ul>'
-#     # Go through each attribute array and only print out necessary attributes
-#     # attr.each do |attr|
-#       line.puts "<li>Campus:</li>"
-#       line.puts "<p>Columbus</p>"
-#   line.puts "<li>Constitution:</li>"
-#   line.puts "<p>google.com</p>"
-#     # end
-#     line.puts '</ul>'
-#   #end
-#   line.puts "<h3> Waffle House Club </h3>"
-#   line.puts '<ul>'
-#   # Go through each attribute array and only print out necessary attributes
-#   # attr.each do |attr|
-#   line.puts "<li>Campus:</li>"
-#   line.puts "<p>Newark</p>"
-#   line.puts "<li>Constitution:</li>"
-#   line.puts "<p>google.com</p>"
-#   # end
-#   line.puts '</ul>'
-#   line.puts '<br />'
-#   line.puts '<h2>Recommended for You</h2>'
-#   # Output an unordered list of recommended organizations
-#   line.puts '<ul>'
-#   #rec.each do |rec|
-#     line.puts "<li>Snowboarding Club </li>"
-#   #end
-#   line.puts '</ul>'
-#   line.puts '</body>'
-#   line.puts '</html>'
-# end
-# puts 'File created at /testing/Organizations.txt'
-# # Launchy::Browser.run('./testing/Organizations.html')

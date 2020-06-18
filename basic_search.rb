@@ -83,6 +83,7 @@ module Searching
     end
 
     # Form string and return
+    campuses[input.to_i-1] = campuses[input.to_i-1].downcase if campuses[input.to_i-1].downcase == 'all'
     ret = "&c=#{campuses[input.to_i - 1]}"
     ret
   end
@@ -174,7 +175,7 @@ module Searching
       break if input_val == '-1'
 
       # Push category number onto input
-      input.push input_val
+      input.push (input_val.to_i - 1)
     end
 
     # Checks if need all categories
@@ -339,7 +340,7 @@ module Searching
 
       # Makes sure that -1 is not pushed into arr
       break if /^-1$/.match? input
-
+      break if /^0$/.match? input
       # Push attribute into arr
       arr.push list[input.to_i-1]
     end

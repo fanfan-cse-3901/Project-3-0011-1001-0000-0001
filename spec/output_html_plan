@@ -1,0 +1,20 @@
+# Created on 06/17/2020 by Amanda Cheng: To replace the rspec framework
+
+Test cases for 0 orgs:
+1) empty org array
+2) 1 attributes
+3) 0 array in rec array
+Results: Outputs to testing/Organizations.html correctly and can be opened in default browser with empty webpage
+
+Test cases for 2 orgs:
+1) org['Name']: 'Waterski', 'Waffle House Clubs'
+2) 2 attributes strings in attr array: 'Campus', 'Constitution'
+3) 1 array in rec array: [['Snowboarding Club', org url]]
+Results: Outputs to testing/Organizations.html correctly and can be opened in default browser
+
+Test cases for 2 orgs:
+1) org['Name']: 'Waterski', 'Waffle House Clubs'
+2) 2 attributes strings in attr array: 'Campus', 'Constitution'
+3) 2 arrays in rec array: [['Snowboarding Club', org url], ['DietADay', org url]]
+Results: Outputs to testing/Organizations.html correctly and can be opened in default browser
+
