@@ -44,7 +44,7 @@ $ brew install g++ fox
 $ brew cask install xquartz
 ```
 
-#### Step 2: Install Gem Package
+#### Step 2: Install Gem Packages
 
 ```
 # Debian/Ubuntu/CentOS

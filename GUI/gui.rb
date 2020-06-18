@@ -62,8 +62,11 @@ class Menu < FXMainWindow
     pre_submit_button.connect(SEL_COMMAND) do
       selected_campus = campus_arr[campus_select.currentItem]
       keyword = keyword_input.to_s.chomp
-      request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape keyword}"
+      if campus_arr[campus_select.currentItem] == 'All'
+        selected_campus = selected_campus.downcase
+      end
 
+      request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape keyword}"
       agent = Mechanize.new
       page = agent.get request_url
 
@@ -117,13 +120,15 @@ class Menu < FXMainWindow
       end
 
       # JSON file output
+      path = path_input.text
       File.open(path, 'w') do |line|
         line.puts orgs.to_json
       end
 
       # output success message
+      puts "Done: #{counter}/#{orgs.length}"
       status.removeText(0, status.length)
-      status.appendText("Saved to #{path}")
+      status.appendText("File Saved to #{path}")
     end
   end
 
