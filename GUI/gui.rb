@@ -117,13 +117,15 @@ class Menu < FXMainWindow
       end
 
       # JSON file output
+      path = path_input.text
       File.open(path, 'w') do |line|
         line.puts orgs.to_json
       end
 
       # output success message
+      puts "Done: #{counter}/#{orgs.length}"
       status.removeText(0, status.length)
-      status.appendText("Saved to #{path}")
+      status.appendText("File Saved to #{path}")
     end
   end
 

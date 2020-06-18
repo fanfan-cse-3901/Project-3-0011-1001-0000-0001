@@ -1,0 +1,71 @@
+# Created on 06/17/2020 by Yifan Yao
+
+Test 1
+Campus: All
+Select Path: Default Path
+Keyword: women osu
+Find orgs expected: 5, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
+
+Test 2
+Campus: Columbus
+Select Path: Default Path
+Keyword: women osu
+Find orgs: 5, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
+
+Test 3
+Campus: Lima
+Select Path: Default Path
+Keyword: women osu
+Find orgs: 0, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
+
+Test 4
+Campus: All
+Select Path: ./<filename>.json
+Keyword: women osu
+Find orgs: 5, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
+
+Test 5
+Campus: All
+Select Path: Default Path/<filename>.json
+Keyword: women osu
+Find orgs: 5, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
+
+Test 6
+Campus: All
+Select Path: Default Path
+Keyword: women
+Find orgs: 89, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
+
+Test 7
+Campus: All
+Select Path: Default Path
+Keyword: women
+Find orgs: N/A, OK
+Save to JSON: OK
+Status: OK
+Console: OK
+Result: OK
