@@ -48,11 +48,11 @@ module Recommendations
     end
     # Get the org lists for the two other categories
     page_url1 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/
-      ?v=list&m=#{CGI.escape category1}"
+      ?v=list&m=#{CGI.escape category1.remove('\'')}"
     new_org1 = Recommendations.get_org_list_modified page_url1
 
     page_url2 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/
-      ?v=list&m=#{CGI.escape category2}"
+      ?v=list&m=#{CGI.escape category2.remove('\'')}"
     new_org2 = Recommendations.get_org_list_modified page_url2
 
     # Get arrays of ids and Remove organizations that are present in the orgs array

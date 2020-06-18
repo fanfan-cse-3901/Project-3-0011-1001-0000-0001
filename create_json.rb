@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require './org.rb'
 # File created 06/17/2020 by Troy Stein: creates a csv file from a file name and a list of org objects
 # Public: stores organizations into a .json file
 #
@@ -8,12 +7,11 @@ require './org.rb'
 #
 # file : name of .json file for json
 #
-#Returns nothing
-def create_json(orgs, file)
+# Returns nothing
+def create_json orgs, file
   File.write file, "{ \n"
   keys = orgs.keys
   orgs.each do |n|
-    puts "#{n}"
     File.write file, "\t\"#{n[0]}\" : { \n", mode: 'a'
     File.write file, "\t\t\"id\" : \"#{n[1].id}\",\n", mode: 'a'
     File.write file, "\t\t\"campus\" : \"#{n[1].campus}\",\n", mode: 'a'
@@ -38,7 +36,7 @@ def create_json(orgs, file)
     File.write file, "\t\t\"how_to_apply\" : \"#{n[1].how_to_apply}\",\n", mode: 'a'
     File.write file, "\t\t\"charge_dues\" : \"#{n[1].charge_dues}\"\n", mode: 'a'
     File.write file, "\t}", mode: 'a'
-    File.write file, ',', mode: 'a' if n[0] != keys [orgs.length() - 1]
+    File.write file, ',', mode: 'a' if n[0] != keys[orgs.length() - 1]
     File.write file, "\n", mode: 'a'
   end
   File.write file, '}', mode: 'a'
