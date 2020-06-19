@@ -24,24 +24,23 @@ module Searching
 
     # Get basic search criteria
     val = 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list' + Searching.get_campus(page)
-    dir = Searching.get_directory
-    val += dir
-    val += Searching.get_search if dir == ''
-    # Ask for advanced search
-    print 'Do you want to perform advanced search? (y/n): '
+
+    # Get option from user since only one of the two things works on the web site
+    print 'Do you want to search the directory[1] or other search criteria[2]: '
     input = gets.chomp
     puts
 
-    # Check for correct input
-    while !/^[ynYN]$/.match? input
-      print 'Invalid input! Do you want to perform advanced search? (y/n): '
+    until /^[12]$/.match? input
+      print 'Invalid input! Enter 1 for directory or 2 for other criteria selection: '
       input = gets.chomp
       puts
     end
 
-    # Get advanced search criteria if yes
-    if /[yY]/.match? input
-      val += Searching.get_category(page) + Searching.get_text_type(page) + Searching.get_reg_win(page) + Searching.show_inactive_org
+    # Get proper additions to link
+    if input == '1'
+      val += Searching.get_directory
+    else
+      val += Searching.get_search + Searching.show_inactive_org + Searching.get_text_type(page) + Searching.get_reg_win(page) + Searching.get_category(page)
     end
 
     # Get list of attributes, 21 if all
@@ -56,8 +55,8 @@ module Searching
   # Created on 06/10/2020 by Prachiti Garge
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   # Edited on 06/17/2020 by Prachiti Garge: Added comments and debugged
+  # Edited on 06/18/2020 by Prachiti Garge: Changed while loop to until
   def self.get_campus(page)
-
     # Scrape the page for campus list
     ret = ''
     list = page.search '//div/select/option'
@@ -79,14 +78,14 @@ module Searching
     puts
 
     # Check input for validity
-    while (!/^[1-9][0-9]*$/.match? input) || input.to_i > campuses.length
+    until (/^[1-9][0-9]*$/.match? input) && input.to_i <= campuses.length
       print "Invalid input! Enter a number between 1 and #{campuses.length}: "
       input = gets.chomp
       puts
     end
 
     # Form string and return
-    campuses[input.to_i-1] = campuses[input.to_i-1].downcase if campuses[input.to_i-1].downcase == 'all'
+    campuses[input.to_i - 1] = campuses[input.to_i - 1].downcase if campuses[input.to_i - 1].downcase == 'all'
     ret = "&c=#{campuses[input.to_i - 1]}"
     ret
   end
@@ -102,7 +101,7 @@ module Searching
     puts
 
     # Check for validity
-    while !/^[A-Za-z01]$/.match? input
+    until /^[A-Za-z01]$/.match? input
       print 'Invalid input! Enter an alphabet (1 for numbers, 0 for all) to search directory: '
       input = gets.chomp
       puts
@@ -140,7 +139,7 @@ module Searching
   # Created on 06/10/2020 by Prachiti Garge
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   # Edited on 06/17/2020 by Prachiti Garge: Added comments and debugged
-  def self.get_category page
+  def self.get_category(page)
     # Scrape the categories
     ret = ''
     list = page.search '//div/span[@id="ctl00_ContentBody_pageFormControl_cbl_org_make_up"]/label'
@@ -159,21 +158,20 @@ module Searching
     input_val = ''
 
     # Get user input
-    while input_val != '-1' # && input_val != '0'
+    until ['-1', '0'].include? input_val
       print "Enter a number between 1 and #{categories.length} per line for a category (0 for all, -1 to end category selection): "
       input_val = gets.chomp
       puts
 
-      # breaks and gives empty string
-      break if input_val == '0'
-
       # Check input validity
       # Extra parenthesis necessary to get correct logic
-      while !(((/^[1-9][0-9]*$/.match? input_val) && input_val.to_i <= categories.length) || input_val == '-1' || input_val == '0')
-        print "Invalid input! Enter a number between 1 and #{categories.length}: "
+      until ((/^[1-9][0-9]*$/.match? input_val) && input_val.to_i <= categories.length) || input_val == '-1' || input_val == '0'
+        print "Invalid input! Enter a number between 1 and #{categories.length}(0 for all, -1 to end category selection): "
         input_val = gets.chomp
         puts
       end
+
+      input = [] if input_val == '0'
       break if input_val == '0'
       break if input_val == '-1'
 
@@ -195,7 +193,7 @@ module Searching
       unless input.include? '0'
         ret = "&m=#{CGI.escape(categories[input[0].to_i - 1])}"
         (1...input.length).each do |i|
-          ret += "+#{CGI.escape(categories[input[i].to_i - 1])}"
+          ret += "%3b#{CGI.escape(categories[input[i].to_i - 1])}"
         end
       end
     end
@@ -206,6 +204,7 @@ module Searching
   # Created on 06/10/2020 by Prachiti Garge
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   # Edited on 06/17/2020 by Prachiti Garge: Added comments and debugged
+  # Edited on 06/18/2020 by Prachiti Garge: Changed while loop to until
   def self.get_text_type(page)
     # Find options for text type
     ret = ''
@@ -228,7 +227,7 @@ module Searching
     puts
 
     # Check input validity
-    while (!/^[1-9][0-9]*$/.match? input) || input.to_i > types.length
+    until (/^[1-9][0-9]*$/.match? input) && input.to_i <= types.length
       print "Invalid input! Enter a number between 1 and #{types.length}: "
       input = gets.chomp
       puts
@@ -243,6 +242,7 @@ module Searching
   # Created on 06/10/2020 by Prachiti Garge
   # Edited on 06/12/2020 by Prachiti Garge: Used mechanize and regex
   # Edited on 06/17/2020 by Prachiti Garge: Added comments and debugged
+  # Edited on 06/18/2020 by Prachiti Garge: Changed while loop to until
   def self.get_reg_win(page)
     # Get option list
     ret = ''
@@ -253,9 +253,9 @@ module Searching
     list.each { |i| win.push i.text.split.join ' ' }
 
     # Display options to user
-    (0...win.length).each { |i|
+    (0...win.length).each do |i|
       puts "#{i + 1}: #{win[i]}"
-    }
+    end
 
     # Get user input
     print "Enter a number between 1 and #{win.length} for a registration window: "
@@ -263,7 +263,7 @@ module Searching
     puts
 
     # Check input validity
-    while (!/^[1-9][0-9]*$/.match? input) || input.to_i > win.length
+    until (/^[1-9][0-9]*$/.match? input) && input.to_i <= win.length
       print "Invalid input! Enter a number between 1 and #{win.length}: "
       input = gets.chomp
       puts
@@ -286,31 +286,28 @@ module Searching
     puts
 
     # Check input validity
-    while !/^[ynYN]$/.match? input
+    until /^[ynYN]$/.match? input
       print 'Invalid input! Do you want to see inactive organizations? (y/n): '
       input = gets.chomp
       puts
     end
 
     # Attach corresponding url
-    ret = if /[yY]/.match? input
-            '&a=0'
-          else
-            '&a=1'
-          end
+    ret = '&a=0' if /[yY]/.match? input
     ret
   end
 
   # Asks user for the attributes they want to see
   # Created on 06/14/2020 by Prachiti Garge
   # Edited on 06/17/2020 by Prachiti Garge: Added comments and debugged
+  # Edited on 06/18/2020 by Prachiti Garge: Debugged
   def self.att_getter
     # Define list of attributes
-    list = Array['Campus', 'Status', 'Purpose Statement', 'Primary Leader', 'Secondary Leader', 'Treasurer Leader',
-                 'Advisor', 'Organization Email', 'Facebook Group Page', 'Website', 'Primary Type', 'Secondary Types',
-                 'Primary Make Up', 'Constitution', 'Meeting Time and Place', 'Office Location', 'Membership Type',
-                 'Membership Contact', 'Time of Year for New Membership', 'How does a Prospective Member Apply',
-                 'Charge Dues']
+    list = ['Campus', 'Status', 'Purpose Statement', 'Primary Leader', 'Secondary Leader', 'Treasurer Leader',
+            'Advisor', 'Organization Email', 'Facebook Group Page', 'Website', 'Primary Type', 'Secondary Types',
+            'Primary Make Up', 'Constitution', 'Meeting Time and Place', 'Office Location', 'Membership Type',
+            'Membership Contact', 'Time of Year for New Membership', 'How does a Prospective Member Apply',
+            'Charge Dues']
     arr = []
 
     # Display list of attributes
@@ -321,7 +318,7 @@ module Searching
     input = ''
 
     # break statement ensures loop stops
-    while input != '-1'
+    until ['-1', '0'].include? input
 
       # Get user input
       print 'Enter a respective attribute number per line (0 for all, -1 to end selection): '
@@ -329,28 +326,25 @@ module Searching
       puts
 
       # Check input validity
-      while !(((/^[1-9][0-9]*$/.match? input) && input.to_i <= list.length) || input == '-1' || input == '0')
+      until ((/^[1-9][0-9]*$/.match? input) && input.to_i <= list.length) || input == '-1' || input == '0'
         print 'Invalid input. Enter number from the range: '
         input = gets.chomp
         puts
       end
 
       # If zero, breaks out of both loops and assigns all attributes to arr
-      if input == '0'
-        arr = list
-        break
-      end
+      arr = list if input == '0'
+      break if /^0$/.match? input
 
       # Makes sure that -1 is not pushed into arr
       break if /^-1$/.match? input
-      break if /^0$/.match? input
+
       # Push attribute into arr
-      arr.push list[input.to_i-1]
+      arr.push list[input.to_i - 1]
     end
 
     # Make unique and return arr
     arr.uniq!
     arr
   end
-
 end
