@@ -6,8 +6,8 @@
 require 'fox16'
 require 'mechanize'
 require 'cgi'
-require 'json'
 require './lib/get_org_list'
+require './lib/output_json'
 
 include Fox
 
@@ -131,9 +131,7 @@ class Menu < FXMainWindow
 
       # JSON file output
       path = path_input.text
-      File.open(path, 'w') do |line|
-        line.puts orgs.to_json
-      end
+      output_json orgs, path
 
       # output success message via console & status field
       puts "Done: #{counter}/#{orgs.length}"

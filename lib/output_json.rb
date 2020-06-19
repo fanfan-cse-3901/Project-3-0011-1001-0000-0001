@@ -18,6 +18,8 @@ def output_json orgs, file
         if key == 'Types'
           line.puts "\t\t\"#{'Primary Type'}\" : \"#{org[key][0]}\",\n"
           line.puts "\t\t\"#{'Secondary Types'}\" : \"#{org[key][1..org[key].length]}\",\n"
+        elsif key == 'Constitution'
+          line.puts "\t\t\"#{key}\" : \"https://activities.osu.edu/posts/studentorgs/constitutions/#{val}\",\n"
         elsif key == 'Charge Dues'
           line.puts "\t\t\"#{key}\" : \"#{val}\"\n"
         else

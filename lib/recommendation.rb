@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # This module provides recommendations to users with other organizations from a related category in some situations.
-# Has method get_rec.
+# Has method get_rec which returns an array that has organization name at 0 and url at 1.
 # Created on 06/17/2020 by Prachiti Garge
 # Edited on 06/18/2020 by Prachiti Garge: Debugged
 require 'mechanize'

@@ -77,14 +77,16 @@ def output_file orgs, rec, path
       end
       line.puts
     end
-  end
-  unless rec.empty?
-    line.puts 'Recommended for You'
-    rec.each do |rec|
-      puts "#{rec[0]}: #{rec[1]}"
+
+    unless rec.empty?
+      line.puts 'Recommended for You'
+      rec.each do |rec|
+        puts "#{rec[0]}: #{rec[1]}"
+      end
     end
   end
   puts "File created at #{path}"
+
 end
 
 # Created on 06/15/2020 by Amanda Cheng
@@ -120,6 +122,10 @@ def output_html orgs, attr, rec, path
           line.puts "<li>#{attr}: #{org['Types'][0]}</li>"
         elsif attr == 'Secondary Types'
           line.puts "<li>#{attr}: #{org['Types'][1...org['Types'].length]}</li>"
+        elsif attr == 'Constitution'
+          if org['Constitution'][0...-1] != 'N/'
+            line.puts "<li><a href=\"https://activities.osu.edu/posts/studentorgs/constitutions/#{org['Constitution'][0...-1]}\">#{org['Constitution'][0...-1]}</a></li>"
+          end
         else
           line.puts "<li>#{attr}: #{org[attr]}</li>"
         end
@@ -131,9 +137,8 @@ def output_html orgs, attr, rec, path
       line.puts '<h2>Recommended for You</h2>'
       # Output an unordered list of recommended organizations and their urls
       line.puts '<ul>'
-      rec.each do |rec|
-        line.puts "<li>#{rec[0]}: #{rec[1]}</li>"
-        # line.puts "<p>#{rec[1]}</p>"
+      rec.each do |url|
+        line.puts "<li><a href=\"#{url[1]}\">#{url[0]}</a></li>"
       end
       line.puts '</ul>'
     end
