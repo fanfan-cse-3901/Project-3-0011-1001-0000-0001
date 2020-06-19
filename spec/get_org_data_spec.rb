@@ -2,8 +2,8 @@
 
 # File created on 06/14/2020 by Kevin Dong
 
-require './get_org_list.rb'
-require './get_org_data.rb'
+require './lib/get_org_list.rb'
+require './lib/get_org_data.rb'
 
 describe '.get_org_data' do
   context 'when given regular page' do

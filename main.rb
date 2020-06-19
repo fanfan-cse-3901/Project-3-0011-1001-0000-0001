@@ -7,11 +7,11 @@ Main file.
 =end
 
 require 'mechanize'
-require './basic_search.rb'
-require './get_org_list.rb'
-require './get_org_data.rb'
-require './recommendation.rb'
-require './output.rb'
+require './lib/basic_search.rb'
+require './lib/get_org_list.rb'
+require './lib/get_org_data.rb'
+require './lib/recommendation.rb'
+require './lib/output.rb'
 
 # MAIN
 puts 'Welcome to The Ohio State University Clubs page!'

@@ -3,10 +3,10 @@
 # Created on 06/14/2020 by Kevin Dong
 # I/O tests
 require 'mechanize'
-require './basic_search.rb'
-require './get_org_list.rb'
-require './get_org_data.rb'
-require './output.rb'
+require './lib/basic_search.rb'
+require './lib/get_org_list.rb'
+require './lib/get_org_data.rb'
+require './lib/output.rb'
 
 # should function normally without extra data
 def simple

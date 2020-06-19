@@ -6,7 +6,7 @@
 # Edited on 06/18/2020 by Prachiti Garge: Debugged
 require 'mechanize'
 require 'cgi'
-require './get_org_list'
+require './lib/get_org_list'
 
 # Module Recommendations has the methods to form the recommendation array
 module Recommendations

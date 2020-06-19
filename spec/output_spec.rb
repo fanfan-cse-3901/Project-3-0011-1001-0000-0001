@@ -2,8 +2,8 @@
 
 # File created on 06/10/2020 by Kevin Dong
 
-require './get_org_list.rb'
-require './output.rb'
+require './lib/get_org_list.rb'
+require './lib/output.rb'
 
 # Edited on 06/15/2020 by Kevin Dong: Fixed for hash
 describe '.output_handler independent methods' do
