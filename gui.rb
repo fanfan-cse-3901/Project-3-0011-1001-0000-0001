@@ -44,6 +44,7 @@ class Menu < FXMainWindow
       dialog = FXDirDialog.new(matrix, 'Choose Directory')
       if dialog.execute != 0
         time = Time.new
+        # put default path into 'Save To' field
         path = "#{dialog.directory}/#{time.year}#{time.month}#{time.day}_#{time.hour}#{time.min}#{time.sec}.json"
         path_input.text = path
       end
@@ -57,27 +58,35 @@ class Menu < FXMainWindow
     FXLabel.new(matrix, 'Status')
     status = FXText.new(matrix, opts: LAYOUT_FILL | TEXT_READONLY | TEXT_WORDWRAP)
 
-    # Step 3.5 - find orgs
+    # Step 3.5 - 'find orgs' button
     pre_submit_button = FXButton.new(matrix, 'Find orgs')
     pre_submit_button.connect(SEL_COMMAND) do
+      # get user input from 'Campus' field
       selected_campus = campus_arr[campus_select.currentItem]
-      keyword = keyword_input.to_s.chomp
-      if campus_arr[campus_select.currentItem] == 'All'
-        selected_campus = selected_campus.downcase
-      end
+      # if user selected 'All' for 'Campus', make it lowercase in url
+      selected_campus = selected_campus.downcase if campus_arr[campus_select.currentItem] == 'All'
 
+      # get user input from 'Keyword' field
+      keyword = keyword_input.to_s.chomp
+
+      # generating url form user input and process request
       request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape keyword}"
       agent = Mechanize.new
       page = agent.get request_url
 
       status.removeText(0, status.length)
-      status.appendText("#{page.search('//form/div/h3').text.split.join(' ')}, click \"Save to JSON\" to get details.")
+      status.appendText "#{page.search('//form/div/h3').text.split.join(' ')}, click \"Save to JSON\" to get details."
     end
 
-    # Step 4 - user clicked the button
+    # Step 4 - 'Save to JSON' button
     submit_button = FXButton.new(matrix, 'Save to JSON')
     submit_button.connect(SEL_COMMAND) do
+      # get user input from 'Campus' field
       selected_campus = campus_arr[campus_select.currentItem]
+      # if user selected 'All' for 'Campus', make it lowercase in url
+      selected_campus = selected_campus.downcase if campus_arr[campus_select.currentItem] == 'All'
+
+      # get user input from 'Keyword' field
       keyword = keyword_input.to_s.chomp
       request_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&c=#{selected_campus}&s=#{CGI.escape keyword}"
       puts request_url
@@ -87,13 +96,14 @@ class Menu < FXMainWindow
       get_org_list request_url, orgs
       counter = 0
 
+      # scrapping from each org
       orgs.each do |org|
         agent = Mechanize.new
         page = agent.get "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{org['id']}"
 
         # get values from form via XPath
-        name = page.search('//div/h4')
-        table = page.search('//form/div/table/tr')
+        name = page.search '//div/h4'
+        table = page.search '//form/div/table/tr'
 
         # print progress in console
         puts "In Progress(#{counter}/#{orgs.length})" if (counter % 15).zero?
@@ -101,7 +111,7 @@ class Menu < FXMainWindow
         # store into name org pair
         org['Name'] = name.text
         # delete attribute Types
-        org.delete('Types')
+        org.delete 'Types'
 
         # partial code from Kevin's get_org_data.rb w/o attr
         (0...table.length).each do |i|
@@ -125,10 +135,10 @@ class Menu < FXMainWindow
         line.puts orgs.to_json
       end
 
-      # output success message
+      # output success message via console & status field
       puts "Done: #{counter}/#{orgs.length}"
       status.removeText(0, status.length)
-      status.appendText("File Saved to #{path}")
+      status.appendText "File Saved to #{path}"
     end
   end
 

@@ -5,7 +5,7 @@
 Handles various output methods.
 =end
 require 'rubygems'
-
+require './volunteer.rb'
 # Created on 06/10/2020 by Kevin Dong
 # Edited on 06/15/2020 by Amanda Cheng: Introduced extra functionality to html file and introduced 2 new parameters
 # Public: Choose between different outputs given pruned orgs list
@@ -49,6 +49,7 @@ def output_console orgs
     end
     puts
   end
+  print_volunteer_events
 end
 
 # Created on 06/11/2020 by Kevin Dong
@@ -82,7 +83,8 @@ end
 # Returns nothing.
 def output_html orgs, attr, rec, path
   file = File.open path, 'w' do |line|
-    line.puts '<html lang="en">'
+    line.puts '<!DOCTYPE html>'
+    line.puts '<html lang="en-US">'
     line.puts '<head>'
     # line.puts '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />'
     line.puts '<title>Your OSU Organizations</title>'

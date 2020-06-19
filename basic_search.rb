@@ -23,9 +23,10 @@ module Searching
     page = agent.get 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list'
 
     # Get basic search criteria
-    val = 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list' + Searching.get_campus(page) +
-          Searching.get_directory + Searching.get_search
-
+    val = 'https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list' + Searching.get_campus(page)
+    dir = Searching.get_directory
+    val += dir
+    val += Searching.get_search if dir == ''
     # Ask for advanced search
     print 'Do you want to perform advanced search? (y/n): '
     input = gets.chomp
@@ -39,7 +40,9 @@ module Searching
     end
 
     # Get advanced search criteria if yes
-    val += Searching.get_category(page) + Searching.get_text_type(page) + Searching.get_reg_win(page) + Searching.show_inactive_org if /[yY]/.match? input
+    if /[yY]/.match? input
+      val += Searching.get_category(page) + Searching.get_text_type(page) + Searching.get_reg_win(page) + Searching.show_inactive_org
+    end
 
     # Get list of attributes, 21 if all
     arr = Searching.att_getter
@@ -107,7 +110,7 @@ module Searching
 
     # Match user input to corresponding attachment to url and return
     ret = if input == '0'
-            '&l=ALL'
+            ''
           elsif input == '1'
             '&l=1'
           else
@@ -175,7 +178,7 @@ module Searching
       break if input_val == '-1'
 
       # Push category number onto input
-      input.push (input_val.to_i - 1)
+      input.push input_val.to_i
     end
 
     # Checks if need all categories
