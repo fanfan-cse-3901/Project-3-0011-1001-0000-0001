@@ -72,7 +72,7 @@ module Recommendations
     # Push to pre_rec_arr
     pre_ret_arr = []
     ids_to_get = (ids_in_new_org1 | ids_in_new_org2)
-    puts ids_to_get
+
     (0...new_org1.length).each do |i|
       pre_ret_arr.push(new_org1[i]) if ids_to_get.include? new_org1[i][0]
     end
