@@ -20,15 +20,20 @@
 #### Extra Functionality
 * Organization Recommendation System: Prachiti Garge
 * GUI: Yifan Yao
-* HTML output: Amanda Cheng
-* Selective Attribute Display : Kevin Dong
+* HTML Output: Amanda Cheng
+* Selective Attribute Scrape and Display : Kevin Dong
+* JSON Output and Volunteer Events Scrape and Output: Troy Stein
 
 #### Testing
 * Unit testing module Searching with test plan: Prachiti Garge
+* Recommendation testing: Prachiti Garge
 * Unit testing output.rb with rspec: Kevin Dong
-* Systems Testing:
+* get_org_data.rb testing: Kevin Dong
+* get_org_list and GUI testing: Yifan Yao
+* HTML Output testing: Amanda Cheng
+* Systems Testing: Prachiti Garge, Amanda Cheng, Kevin Dong
 
-### How to make to work
+### Setup
 
 #### Step 1: Install Dependencies
 
@@ -55,3 +60,8 @@ $ ruby main.rb
 $ ruby gui.rb 
 ```
 
+### The Program
+
+Run main.rb for console based input with Advanced Search functionality, Attribute filtering.
+
+Run gui.rb for graphical input with custom information output, graphical file output, and seperate organization listing.
