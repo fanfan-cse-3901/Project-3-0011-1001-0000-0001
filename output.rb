@@ -6,6 +6,7 @@ Handles various output methods.
 =end
 require 'rubygems'
 require './volunteer.rb'
+
 # Created on 06/10/2020 by Kevin Dong
 # Edited on 06/15/2020 by Amanda Cheng: Introduced extra functionality to html file and introduced 2 new parameters
 # Public: Choose between different outputs given pruned orgs list
