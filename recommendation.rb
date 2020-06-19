@@ -3,7 +3,7 @@
 # This module provides recommendations to users with other organizations from a related category in some situations.
 # Has method get_rec.
 # Created on 06/17/2020 by Prachiti Garge
-
+# Edited on 06/18/2020 by Prachiti Garge: Debugged
 require 'mechanize'
 require 'cgi'
 require './get_org_list'
@@ -16,6 +16,7 @@ module Recommendations
   # orgs - Array of hashes of organizations
   #
   # Created on 06/17/2020 by Prachiti Garge
+  # Edited on 06/18/2020 by Prachiti Garge: Debugged
   def self.get_rec url_from_bs, orgs
     ret_arr = []
     # If no m= portion, don't provide any recommendations
@@ -30,9 +31,8 @@ module Recommendations
     # Get random org
     rand_org = orgs.sample
     category = rand_org['Types'][0]
-    category1 = ''
-    category2 = ''
-    # Get two related categories from appropriate cluster
+
+     # Get two related categories from appropriate cluster
     if cluster1.include? category
       cluster1.delete category
       category1 = cluster1.delete (cluster1.sample)
@@ -47,35 +47,36 @@ module Recommendations
       category2 = cluster3.delete (cluster3.sample)
     end
     # Get the org lists for the two other categories
-    page_url1 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/
-      ?v=list&m=#{CGI.escape category1.remove('\'')}"
+    page_url1 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&m=#{CGI.escape category1}"
     new_org1 = Recommendations.get_org_list_modified page_url1
 
-    page_url2 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/
-      ?v=list&m=#{CGI.escape category2.remove('\'')}"
+    page_url2 = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=list&m=#{CGI.escape category2}"
     new_org2 = Recommendations.get_org_list_modified page_url2
 
     # Get arrays of ids and Remove organizations that are present in the orgs array
     ids_in_orgs = []
-    orgs.each do |x|
+    (0...orgs.length).each do |x|
       ids_in_orgs.push orgs[x].key('id')
     end
     ids_in_new_org1 = []
-    new_org1.each do |y|
+    (0...new_org1.length).each do |y|
       ids_in_new_org1.push(new_org1[y][0]) unless ids_in_orgs.include? new_org1[y][0]
     end
     ids_in_new_org2 = []
-    new_org1.each do |z|
-      ids_in_new_org2.push(new_org2[z][0]) unless (ids_in_orgs.include? new_org2[z][0]) || (ids_in_new_org1.include? new_org2[z][0])
+    (0...new_org2.length).each do |z|
+      unless (ids_in_orgs.include? new_org2[z][0]) || (ids_in_new_org1.include? new_org2[z][0])
+        ids_in_new_org2.push(new_org2[z][0])
+      end
     end
 
     # Push to pre_rec_arr
-    pre_rec_arr = ''
-    ids_to_get = (ids_in_new_org1.push ids_in_new_org2).uniq!
-    new_org1.each do |i|
+    pre_ret_arr = []
+    ids_to_get = (ids_in_new_org1 | ids_in_new_org2)
+    puts ids_to_get
+    (0...new_org1.length).each do |i|
       pre_ret_arr.push(new_org1[i]) if ids_to_get.include? new_org1[i][0]
     end
-    new_org2.each do |j|
+    (0...new_org2.length).each do |j|
       pre_ret_arr.push(new_org2[j][0]) if ids_in_orgs.include? new_org2[j][0]
     end
 
@@ -110,7 +111,7 @@ module Recommendations
     end
 
     # Create for loop to insert names and urls from ids
-    ret_arr.each do |i|
+    (0...ret_arr.length).each do |i|
       new_url = "https://activities.osu.edu/involvement/student_organizations/find_a_student_org?i=#{ret_arr[i][0]}"
       page = agent1.get new_url
       ret_arr[i][1] = page.search('//div/h4').text

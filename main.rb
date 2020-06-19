@@ -22,5 +22,6 @@ get_org_list ins[0], orgs # stores objects into array orgs
 puts 'GOT LIST'
 get_org_data orgs if ins[1].length == 21
 get_org_attr orgs, ins[1] if ins[1].length != 21 # populates Org objects with respective data
-output_handler orgs, ins[1], [] # display all Orgs
+recs = Recommendations.get_rec ins[0], orgs
+output_handler orgs, ins[1], recs # display all Orgs
 

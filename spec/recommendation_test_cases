@@ -1,0 +1,11 @@
+1) "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=card&c=Marion&ot=1&m=Governance+Organizations%3bHonoraries%2fHonor+Societies%3bSpecial+Interest"
+Result: 6 recommendations from related category. OK.
+
+2) "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=card&c=Marion&ot=1"
+Result: No recommendations. OK.
+
+3) "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=card&c=Marion&m=Honoraries%2fHonor+Societies%3bSports+and+Recreation"
+Result: 6 recommendations from related category. OK.
+
+4) "https://activities.osu.edu/involvement/student_organizations/find_a_student_org/?v=card&s=hello&c=Columbus"
+Result: "Nothing to output". OK.
