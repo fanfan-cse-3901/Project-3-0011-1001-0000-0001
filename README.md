@@ -22,16 +22,18 @@
 * GUI: Yifan Yao
 * HTML Output: Amanda Cheng
 * Selective Attribute Scrape and Display : Kevin Dong
-* JSON Output and Volunteer Events Scrape and Output: Troy Stein
+* JSON Output: Troy Stein
+
+* Note: Recommendations can only be obtained when only some (not all) categories are selected.
 
 #### Testing
-* Unit testing module Searching with test plan: Prachiti Garge
-* Recommendation testing: Prachiti Garge
-* Unit testing output.rb with rspec: Kevin Dong
-* get_org_data.rb testing: Kevin Dong
-* get_org_list and GUI testing: Yifan Yao
-* HTML Output testing: Amanda Cheng
-* Systems Testing: Prachiti Garge, Amanda Cheng, Kevin Dong
+* Unit testing module Searching with testing/basic_search_test_plan: Prachiti Garge
+* Module Recommendations testing with testing/recommendation_test_cases: Prachiti Garge
+* Unit testing output.rb with rspec on spec/output_spec.rb: Kevin Dong
+* get_org_data.rb testing using rspec spec/get_org_data_spec.rb : Kevin Dong
+* get_org_list and GUI testing with testing/gui_test_plan: Yifan Yao
+* HTML Output testing with testing/output_html_plan: Amanda Cheng
+* Systems Testing with testing/test_plan: Prachiti Garge, Amanda Cheng, Kevin Dong, Yifan Yao
 
 ### Setup
 
@@ -62,6 +64,10 @@ $ ruby gui.rb
 
 ### The Program
 
-Run main.rb for console based input with Advanced Search functionality, Attribute filtering.
+* Run main.rb for console based input with Advanced Search functionality, Attribute filtering.
 
-Run gui.rb for graphical input with custom information output, graphical file output, and seperate organization listing.
+* Run gui.rb for graphical input with custom information output, graphical file output, and separate organization listing.
+
+* Run rspec test cases using command 'rspec' in the project directory.
+
+* Run other test plans using 'run' in the respective ruby files.

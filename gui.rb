@@ -7,7 +7,7 @@ require 'fox16'
 require 'mechanize'
 require 'cgi'
 require 'json'
-require './get_org_list'
+require './lib/get_org_list'
 
 include Fox
 
