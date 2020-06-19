@@ -9,7 +9,7 @@ require './org.rb'
 # file : name of .json file for json
 #
 #Returns nothing
-def create_json(orgs, file)
+def create_json orgs, file
     File.write file, "{ \n"
     orgs.each do |n|
         puts "#{n}"
